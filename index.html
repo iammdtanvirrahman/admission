@@ -210,7 +210,7 @@ tfoot b{color:var(--text);font-weight:600}
 .problem-backdrop{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.78);backdrop-filter:blur(8px)}
 .problem-dialog{display:flex;flex-direction:column;width:min(620px,100%);max-height:88dvh;overflow:hidden;border:1px solid #39393f;border-radius:16px;background:#0c0c0e;box-shadow:0 24px 90px #000}
 .problem-head{display:flex;align-items:flex-start;gap:12px;padding:18px;border-bottom:1px solid var(--line-hi)}.problem-head h2{margin:0;font-size:17px}.problem-sub{margin-top:4px;color:var(--muted);font-size:12px}.problem-close{margin-left:auto;width:34px;height:34px;border:1px solid var(--line-hi);border-radius:9px;color:var(--muted)}
-.problem-body{padding:16px;overflow:auto}.problem-label{display:block;margin:0 0 7px;color:#c8c8ce;font-size:12px;font-weight:600}.problem-input{display:block;width:100%;min-height:95px;padding:11px;border:1px solid var(--line-hi);border-radius:10px;outline:none;background:#050506;color:var(--text);resize:vertical;font:inherit;font-family:var(--font);line-height:1.7;}.problem-input:focus{border-color:#ff5d6c}.problem-compose{display:grid;gap:12px}.problem-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.problem-file{max-width:100%;font-size:12px;color:var(--muted)}.problem-hint{color:var(--dim);font-size:11px}.problem-list{display:grid;gap:9px;margin-top:18px}.problem-item{padding:12px;border:1px solid var(--line-hi);border-radius:11px;background:#101012}.problem-item.solved{opacity:.68}.problem-tags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}.problem-tags span{padding:3px 7px;border:1px solid #2b4938;border-radius:12px;background:#102019;color:var(--green-hi);font-size:10px}.problem-item-top{display:flex;align-items:center;gap:8px}.problem-item-top .state{margin-left:auto;color:#ff8290;font-size:11px}.problem-item.solved .state{color:var(--green-hi)}.problem-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.problem-image{display:block;max-width:100%;max-height:260px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}.problem-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.problem-item-actions button{padding:6px 9px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:11px}.problem-small{min-height:55px;margin-bottom:10px;resize:vertical}.problem-tag-input{min-height:0;height:40px;margin-bottom:10px}.hub-extra-fields{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.problem-empty{padding:20px;border:1px dashed var(--line-hi);border-radius:10px;color:var(--muted);text-align:center;font-size:13px}
+.problem-body{padding:16px;overflow:auto}.problem-label{display:block;margin:0 0 7px;color:#c8c8ce;font-size:12px;font-weight:600}.problem-input{display:block;width:100%;min-height:95px;padding:11px;border:1px solid var(--line-hi);border-radius:10px;outline:none;background:#050506;color:var(--text);resize:vertical;font:inherit;font-family:var(--font);line-height:1.7;}.problem-input:focus{border-color:#ff5d6c}.problem-compose{display:grid;gap:12px}.problem-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.problem-file{max-width:100%;font-size:12px;color:var(--muted)}.problem-hint{color:var(--dim);font-size:11px}.problem-image[data-image-key]{background:#111;min-height:60px;object-fit:contain}.problem-list{display:grid;gap:9px;margin-top:18px}.problem-item{padding:12px;border:1px solid var(--line-hi);border-radius:11px;background:#101012}.problem-item.solved{opacity:.68}.problem-tags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}.problem-tags span{padding:3px 7px;border:1px solid #2b4938;border-radius:12px;background:#102019;color:var(--green-hi);font-size:10px}.problem-item-top{display:flex;align-items:center;gap:8px}.problem-item-top .state{margin-left:auto;color:#ff8290;font-size:11px}.problem-item.solved .state{color:var(--green-hi)}.problem-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.problem-image{display:block;max-width:100%;max-height:260px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}.problem-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.problem-item-actions button{padding:6px 9px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:11px}.problem-small{min-height:55px;margin-bottom:10px;resize:vertical}.problem-tag-input{min-height:0;height:40px;margin-bottom:10px}.hub-extra-fields{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.problem-empty{padding:20px;border:1px dashed var(--line-hi);border-radius:10px;color:var(--muted);text-align:center;font-size:13px}
 
 /* AdmissionOS 2.0 Study Hub */
 .hub-backdrop{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(10px)}
@@ -392,7 +392,7 @@ tfoot b{color:var(--text);font-weight:600}
         <section class="hub-panel" id="hubPanel-backup" hidden>
           <div class="hub-section-title"><div><h3>Backup & Offline</h3><p>Your chapter progress, planner, reminders, focus stats and problem notebook can be exported in one file.</p></div></div>
           <div class="backup-grid"><div class="hub-card"><h4>Complete backup</h4><p>Download a JSON file containing all locally stored AdmissionOS data.</p><button class="btn hub-primary" id="fullExportBtn" type="button">Export all data</button></div><div class="hub-card"><h4>Restore backup</h4><p>Import a previous AdmissionOS backup. Existing data is merged where possible.</p><button class="btn" id="fullImportBtn" type="button">Choose backup file</button><input type="file" id="fullImportFile" accept="application/json,.json" hidden></div><div class="hub-card"><h4>Offline mode</h4><p id="offlineStatus">Checking offline support…</p><button class="btn" id="offlineInstallBtn" type="button">Enable offline cache</button></div></div>
-          <p class="hub-note">For privacy, this backup stays on your device until you choose to move it. Google cloud sync requires an internet connection. Images in this notebook are included in JSON export.</p>
+          <p class="hub-note">For privacy, this backup stays on your device until you choose to move it. Google cloud sync requires an internet connection. Notebook text and metadata sync through Google sign-in. Photos are stored locally in IndexedDB to avoid Firestore document limits; export a full backup to transfer them to another device.</p>
         </section>
       </div>
     </section>
@@ -668,22 +668,71 @@ $('#importBtn').addEventListener('click',()=>{closeMenus();$('#importFile').clic
 $('#importFile').addEventListener('change',e=>{const f=e.target.files[0];if(f)fullImportFile(f);e.target.value=''});
 
 
-/* Problems for Later: local-first, chapter-wise cloud sync */
-function saveProblemsLocal(){try{localStorage.setItem(PROBLEMS_STORE,JSON.stringify(problems));return true}catch(e){flash('Problem backup is full on this device','err');return false}}
-function queueProblemCloud(k){if(!user||!db)return;clearTimeout(problemCloudTimers[k]);setSync('busy','Saving problems…');problemCloudTimers[k]=setTimeout(async()=>{try{await docRef(user).set({problemsByChapter:problems,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});setSync('ok','Synced',user.email||'')}catch(e){cloudError(e)}},500)}
+/* Problems for Later: local-first, IndexedDB image storage and metadata-only cloud sync */
+const PROBLEM_IMAGE_DB='AdmissionOS2Images',PROBLEM_IMAGE_STORE='images';
+let problemImageDbPromise=null,problemImageUrls={};
+function openProblemImageDB(){
+  if(!('indexedDB' in window))return Promise.resolve(null);
+  if(problemImageDbPromise)return problemImageDbPromise;
+  problemImageDbPromise=new Promise((resolve,reject)=>{
+    const req=indexedDB.open(PROBLEM_IMAGE_DB,1);
+    req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(PROBLEM_IMAGE_STORE))db.createObjectStore(PROBLEM_IMAGE_STORE)};
+    req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('Image database unavailable'));
+  }).catch(e=>{problemImageDbPromise=null;throw e});
+  return problemImageDbPromise;
+}
+async function saveProblemImage(id,dataUrl){
+  try{const dbx=await openProblemImageDB();if(!dbx)return false;const blob=await fetch(dataUrl).then(r=>r.blob());await new Promise((resolve,reject)=>{const tx=dbx.transaction(PROBLEM_IMAGE_STORE,'readwrite');tx.objectStore(PROBLEM_IMAGE_STORE).put(blob,id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)});return true}catch(e){return false}
+}
+async function getProblemImageBlob(id){
+  const dbx=await openProblemImageDB();if(!dbx)return null;
+  return new Promise((resolve,reject)=>{const tx=dbx.transaction(PROBLEM_IMAGE_STORE,'readonly'),req=tx.objectStore(PROBLEM_IMAGE_STORE).get(id);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error)})
+}
+async function getProblemImageURL(id){
+  if(problemImageUrls[id])return problemImageUrls[id];
+  const blob=await getProblemImageBlob(id);if(!blob)return '';
+  problemImageUrls[id]=URL.createObjectURL(blob);return problemImageUrls[id];
+}
+function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.readAsDataURL(blob)})}
+async function hydrateProblemImages(){
+  $('#problemList img[data-image-key]').forEach(async img=>{try{const src=await getProblemImageURL(img.dataset.imageKey);if(src){img.src=src;img.removeAttribute('data-image-key')}else{img.hidden=true;const note=document.createElement('div');note.className='problem-hint';note.textContent='ছবিটি এই ডিভাইসে নেই। মূল ডিভাইস থেকে backup import করো।';img.after(note)}}catch(e){img.hidden=true}});
+}
+async function migrateProblemImages(){
+  let changed=false;const changedKeys=[];
+  for(const k of Object.keys(problems)){for(const item of (problems[k]||[])){if(item.image&&String(item.image).startsWith('data:image/')&&item.id){
+    const id=item.imageKey||('problem_'+item.id);
+    if(await saveProblemImage(id,item.image)){item.imageKey=id;item.hasImage=true;delete item.image;changed=true;changedKeys.push(k)}
+  }}}
+  if(changed){saveProblemsLocal();[...new Set(changedKeys)].forEach(queueProblemCloud);renderProblemList()}
+}
+function cloudSafeProblems(){
+  const out={};
+  Object.keys(problems).forEach(k=>{out[k]=(problems[k]||[]).map(item=>{const x=Object.assign({},item);if(x.image||x.imageKey)x.hasImage=true;delete x.image;delete x.imageKey;return x})});
+  return out;
+}
+function mergeCloudProblems(remote){
+  if(!remote||typeof remote!=='object'||Array.isArray(remote))return;
+  Object.keys(remote).forEach(k=>{
+    const local=Array.isArray(problems[k])?problems[k]:[],rem=Array.isArray(remote[k])?remote[k]:[],byId=new Map(local.map(x=>[x.id,x]));
+    const merged=rem.map(r=>{const old=byId.get(r.id);if(old){const x=Object.assign({},old,r);if(old.image)x.image=old.image;if(old.imageKey)x.imageKey=old.imageKey;if(old.hasImage)x.hasImage=true;byId.delete(r.id);return x}return r});
+    byId.forEach(v=>merged.push(v));problems[k]=merged;
+  });
+}
+function saveProblemsLocal(){try{localStorage.setItem(PROBLEMS_STORE,JSON.stringify(problems));return true}catch(e){flash('নোটবুকের লেখা সেভ হয়নি। Backup export করে পুরোনো ডেটা নিরাপদে রাখো।','err');return false}}
+function queueProblemCloud(k){if(!user||!db)return;clearTimeout(problemCloudTimers[k]);setSync('busy','Saving problems…');problemCloudTimers[k]=setTimeout(async()=>{try{await docRef(user).set({problemsByChapter:cloudSafeProblems(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});setSync('ok','Synced',user.email||'')}catch(e){cloudError(e)}},500)}
 function persistProblems(k){saveProblemsLocal();queueProblemCloud(k);renderRows();renderProblemList()}
 function chapterNameFromKey(k){for(const s of subjects)for(const ch of s.chapters)if(key(s.id,ch)===k)return s.bn+' · '+ch[0]+'. '+ch[1];return 'অধ্যায়'}
-function openProblems(k){problemChapterKey=k;$('#problemChapter').textContent=chapterNameFromKey(k);$('#problemBackdrop').hidden=false;document.body.style.overflow='hidden';$('#problemText').value='';$('#problemReason').value='';$('#problemSolution').value='';$('#problemTags').value='';$('#problemImage').value='';$('#problemSaveHint').textContent=user?'Cloud sync চালু':'Local backup — Google Login করলে cloud sync হবে';renderProblemList();setTimeout(()=>$('#problemText').focus(),50)}
+function openProblems(k){problemChapterKey=k;$('#problemChapter').textContent=chapterNameFromKey(k);$('#problemBackdrop').hidden=false;document.body.style.overflow='hidden';$('#problemText').value='';$('#problemReason').value='';$('#problemSolution').value='';$('#problemTags').value='';$('#problemImage').value='';$('#problemSaveHint').textContent=user?'Text sync চালু · ছবি এই ডিভাইসে':'Local save · ছবি এই ডিভাইসে';renderProblemList();setTimeout(()=>$('#problemText').focus(),50)}
 function closeProblems(){$('#problemBackdrop').hidden=true;document.body.style.overflow='';problemChapterKey=null}
-function renderProblemList(){const el=$('#problemList');if(!el)return;const arr=problemChapterKey?(problems[problemChapterKey]||[]):[];if(!arr.length){el.innerHTML='<div class="problem-empty">এখনো কোনো প্রশ্ন রাখা হয়নি। উপরে প্রশ্ন লিখে বা ছবি দিয়ে সংরক্ষণ করো।</div>';return}el.innerHTML=arr.map((p,i)=>'<article class="problem-item'+(p.solved?' solved':'')+'" data-problem-id="'+esc(p.id)+'"><div class="problem-item-top"><strong>প্রশ্ন '+(i+1)+'</strong><span class="state">'+(p.solved?'✓ Solved':'● Pending')+'</span></div>'+(p.text?'<div class="problem-text">'+esc(p.text)+'</div>':'')+(p.reason?'<div class="problem-text"><b>ভুলের কারণ:</b> '+esc(p.reason)+'</div>':'')+(p.solution?'<div class="problem-text"><b>সমাধান:</b> '+esc(p.solution)+'</div>':'')+((p.tags||[]).length?'<div class="problem-tags">'+p.tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div>':'')+(p.image?'<img class="problem-image" src="'+p.image+'" alt="সংরক্ষিত প্রশ্নের ছবি">':'')+'<div class="problem-item-actions"><button type="button" data-problem-action="toggle">'+(p.solved?'আবার Pending':'✓ Solved চিহ্নিত করো')+'</button><button type="button" data-problem-action="edit">Edit</button><button type="button" data-problem-action="delete">Delete</button></div></article>').join('')}
+function renderProblemList(){const el=$('#problemList');if(!el)return;const arr=problemChapterKey?(problems[problemChapterKey]||[]):[];if(!arr.length){el.innerHTML='<div class="problem-empty">এখনো কোনো প্রশ্ন রাখা হয়নি। উপরে প্রশ্ন লিখে বা ছবি দিয়ে সংরক্ষণ করো।</div>';return}el.innerHTML=arr.map((p,i)=>'<article class="problem-item'+(p.solved?' solved':'')+'" data-problem-id="'+esc(p.id)+'"><div class="problem-item-top"><strong>প্রশ্ন '+(i+1)+'</strong><span class="state">'+(p.solved?'✓ Solved':'● Pending')+'</span></div>'+(p.text?'<div class="problem-text">'+esc(p.text)+'</div>':'')+(p.reason?'<div class="problem-text"><b>ভুলের কারণ:</b> '+esc(p.reason)+'</div>':'')+(p.solution?'<div class="problem-text"><b>সমাধান:</b> '+esc(p.solution)+'</div>':'')+((p.tags||[]).length?'<div class="problem-tags">'+p.tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div>':'')+(p.image?'<img class="problem-image" src="'+p.image+'" alt="সংরক্ষিত প্রশ্নের ছবি">':p.imageKey?'<img class="problem-image" data-image-key="'+esc(p.imageKey)+'" alt="সংরক্ষিত প্রশ্নের ছবি">':p.hasImage?'<div class="problem-hint">ছবিটি অন্য ডিভাইসে sync হয়নি; ছবি-সহ backup import করো।</div>':'')+'<div class="problem-item-actions"><button type="button" data-problem-action="toggle">'+(p.solved?'আবার Pending':'✓ Solved চিহ্নিত করো')+'</button><button type="button" data-problem-action="edit">Edit</button><button type="button" data-problem-action="delete">Delete</button></div></article>').join('');hydrateProblemImages()}
 function compressProblemImage(file){return new Promise((resolve,reject)=>{if(!file||!file.type.startsWith('image/')){resolve('');return}const reader=new FileReader();reader.onerror=()=>reject(new Error('ছবি পড়া যায়নি'));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('ছবিটি খোলা যায়নি'));img.onload=()=>{const scale=Math.min(1,1200/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',.68))};img.src=reader.result};reader.readAsDataURL(file)})}
 $('#rows').addEventListener('click',e=>{const b=e.target.closest('[data-problem-key]');if(b)openProblems(b.dataset.problemKey)});
 $('#problemClose').addEventListener('click',closeProblems);
 $('#problemBackdrop').addEventListener('click',e=>{if(e.target===$('#problemBackdrop'))closeProblems()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#problemBackdrop').hidden)closeProblems()});
-$('#problemForm').addEventListener('submit',async e=>{e.preventDefault();if(!problemChapterKey)return;const text=$('#problemText').value.trim(),reason=$('#problemReason').value.trim(),solution=$('#problemSolution').value.trim(),tags=$('#problemTags').value.split(',').map(x=>x.trim()).filter(Boolean),file=$('#problemImage').files[0];if(!text&&!file){flash('প্রশ্ন লিখো অথবা ছবি যোগ করো','err');return}const btn=$('#problemSave');btn.disabled=true;btn.textContent='সংরক্ষণ হচ্ছে…';try{const image=await compressProblemImage(file),k=problemChapterKey,arr=problems[k]||(problems[k]=[]);arr.push({id:'p_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),text,reason,solution,tags,image,solved:false,createdAt:Date.now()});$('#problemText').value='';$('#problemReason').value='';$('#problemSolution').value='';$('#problemTags').value='';$('#problemImage').value='';persistProblems(k);flash(user?'প্রশ্ন সংরক্ষিত · Syncing':'প্রশ্ন Local Backup-এ সংরক্ষিত','ok')}catch(err){flash(err.message||'প্রশ্ন সংরক্ষণ করা যায়নি','err')}finally{btn.disabled=false;btn.textContent='＋ প্রশ্ন সংরক্ষণ'}});
+$('#problemForm').addEventListener('submit',async e=>{e.preventDefault();if(!problemChapterKey)return;const text=$('#problemText').value.trim(),reason=$('#problemReason').value.trim(),solution=$('#problemSolution').value.trim(),tags=$('#problemTags').value.split(',').map(x=>x.trim()).filter(Boolean),file=$('#problemImage').files[0];if(!text&&!file){flash('প্রশ্ন লিখো অথবা ছবি যোগ করো','err');return}const btn=$('#problemSave');btn.disabled=true;btn.textContent='সংরক্ষণ হচ্ছে…';try{const imageData=await compressProblemImage(file),k=problemChapterKey,arr=problems[k]||(problems[k]=[]),id='p_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);let image='',imageKey='';if(imageData){if(await saveProblemImage('problem_'+id,imageData))imageKey='problem_'+id;else image=imageData}arr.push({id,text,reason,solution,tags,image,imageKey,hasImage:!!imageData,solved:false,createdAt:Date.now()});$('#problemText').value='';$('#problemReason').value='';$('#problemSolution').value='';$('#problemTags').value='';$('#problemImage').value='';persistProblems(k);flash(user?'প্রশ্ন সংরক্ষিত · Text syncing':'প্রশ্ন local save হয়েছে','ok')}catch(err){flash(err.message||'প্রশ্ন সংরক্ষণ করা যায়নি','err')}finally{btn.disabled=false;btn.textContent='＋ প্রশ্ন সংরক্ষণ'}});
 $('#problemList').addEventListener('click',e=>{const b=e.target.closest('[data-problem-action]');if(!b||!problemChapterKey)return;const k=problemChapterKey,arr=problems[k]||[],card=b.closest('[data-problem-id]'),i=arr.findIndex(p=>p.id===card.dataset.problemId);if(i<0)return;const action=b.dataset.problemAction;if(action==='toggle'){arr[i].solved=!arr[i].solved;persistProblems(k)}else if(action==='delete'){if(!confirm('এই প্রশ্নটি মুছে ফেলবে?'))return;arr.splice(i,1);if(!arr.length)delete problems[k];persistProblems(k)}else if(action==='edit'){const p=arr[i],next=prompt('প্রশ্ন / নোট সম্পাদনা করো:',p.text||'');if(next===null)return;const reason=prompt('ভুলের কারণ:',p.reason||'');if(reason===null)return;const solution=prompt('সমাধান / সঠিক ধারণা:',p.solution||'');if(solution===null)return;const tags=prompt('ট্যাগ (কমা দিয়ে):',(p.tags||[]).join(', '));if(tags===null)return;p.text=next.trim();p.reason=reason.trim();p.solution=solution.trim();p.tags=tags.split(',').map(x=>x.trim()).filter(Boolean);persistProblems(k)}});
-async function loadCloudProblems(u){try{const snap=await docRef(u).get(),data=snap.exists?snap.data():{},remote=data.problemsByChapter;if(remote&&typeof remote==='object'&&!Array.isArray(remote)){Object.keys(remote).forEach(k=>{problems[k]=Array.isArray(remote[k])?remote[k]:[]});saveProblemsLocal()}else if(Object.keys(problems).length){queueProblemCloud(Object.keys(problems)[0])}renderRows();renderProblemList()}catch(e){cloudError(e)}}
+async function loadCloudProblems(u){try{const snap=await docRef(u).get(),data=snap.exists?snap.data():{},remote=data.problemsByChapter;if(remote&&typeof remote==='object'&&!Array.isArray(remote)){mergeCloudProblems(remote);saveProblemsLocal()}else if(Object.keys(problems).length){queueProblemCloud(Object.keys(problems)[0])}await migrateProblemImages();renderRows();renderProblemList()}catch(e){cloudError(e)}}
 
 /* ---------- status + cloud sync ---------- */
 const sync={kind:'local',text:'Local',tip:''};
@@ -928,10 +977,12 @@ function showHubTab(tab){
 function refreshOfflineStatus(){
   $('#offlineStatus').textContent=('serviceWorker' in navigator)?'Offline app shell is supported in this browser. Cache this app once while online.':'This browser does not support Service Workers; local storage still works while the page is open.';
 }
-function fullExport(){
-  const data={app:'AdmissionOS',version:2,exportedAt:new Date().toISOString(),progress,problems,studyPlans,revisionReminders,focusData};
+async function fullExport(){
+  const backupProblems=JSON.parse(JSON.stringify(problems));let missingImages=0;
+  for(const k of Object.keys(backupProblems)){for(const item of backupProblems[k]||[]){if(item.imageKey&&!item.image){try{const blob=await getProblemImageBlob(item.imageKey);if(blob)item.image=await blobToDataURL(blob);else missingImages++}catch(e){missingImages++}}delete item.imageKey}}
+  const data={app:'AdmissionOS',version:2,exportedAt:new Date().toISOString(),progress,problems:backupProblems,studyPlans,revisionReminders,focusData};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='admissionos-2-backup-'+localDate()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);flash('Complete backup exported','ok');
+  a.href=url;a.download='admissionos-2-backup-'+localDate()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);flash(missingImages?'Backup exported; '+missingImages+' photo(s) were unavailable':'Complete backup with photos exported','ok');
 }
 function mergeObject(dst,src){if(!src||typeof src!=='object'||Array.isArray(src))return dst;Object.keys(src).forEach(k=>{if(Array.isArray(src[k]))dst[k]=src[k];else if(src[k]&&typeof src[k]==='object')dst[k]=Object.assign({},dst[k]||{},src[k]);else dst[k]=src[k]});return dst}
 function fullImportFile(file){
@@ -944,7 +995,7 @@ function fullImportFile(file){
     if(d.studyPlans&&typeof d.studyPlans==='object')studyPlans=mergeObject(studyPlans,d.studyPlans);
     if(Array.isArray(d.revisionReminders)){const ids=new Set(revisionReminders.map(x=>x.id));d.revisionReminders.forEach(x=>{if(!ids.has(x.id))revisionReminders.push(x)})}
     if(d.focusData&&typeof d.focusData==='object'){focusData.days=Object.assign({},focusData.days||{},d.focusData.days||{});if(d.focusData.sessionMinutes)focusData.sessionMinutes=d.focusData.sessionMinutes}
-    saveLocal();saveProblemsLocal();persistPlans();persistReminders();persistFocus();queueCloudSave();renderRows();renderStats();renderProblemList();renderPlanner();renderRevisionList();renderAnalytics();renderFocusStats();flash('Backup restored and merged','ok');
+    saveLocal();saveProblemsLocal();migrateProblemImages();persistPlans();persistReminders();persistFocus();queueCloudSave();renderRows();renderStats();renderProblemList();renderPlanner();renderRevisionList();renderAnalytics();renderFocusStats();flash('Backup restored and merged','ok');
   }catch(e){flash('Backup file invalid: '+(e.message||'parse error'),'err')}};
   reader.readAsText(file);
 }
@@ -973,6 +1024,7 @@ $('#fullImportBtn').addEventListener('click',()=>$('#fullImportFile').click());
 $('#fullImportFile').addEventListener('change',e=>{const f=e.target.files[0];if(f)fullImportFile(f);e.target.value=''});
 $('#offlineInstallBtn').addEventListener('click',async()=>{if(!('serviceWorker'in navigator)){flash('Offline caching is not supported by this browser','err');return}try{await navigator.serviceWorker.register('./sw.js');await navigator.serviceWorker.ready;refreshOfflineStatus();flash('Offline cache enabled. Reload the app once online.','ok')}catch(e){flash('Offline cache failed: '+(e.message||'error'),'err')}});
 setupPlannerOptions();
+migrateProblemImages();
 updateRevisionBadge();
 if(focusData.runningSince){beginFocusTick()}
 
