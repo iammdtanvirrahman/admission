@@ -47,6 +47,14 @@ const subjects=[
 const steps=['পড়া শেষ','Revision 1','Revision 2','Revision 3'];
 const STORE='admissionOS_v1';
 const FIREBASE_STORE='admissionOS_firebase_config_v1';
+const DEFAULT_FIREBASE_CONFIG={
+ apiKey:"AIzaSyBaGrEu0NChF5yyCDfcdFZoc2OladgBHUA",
+ authDomain:"admission-da1d4.firebaseapp.com",
+ projectId:"admission-da1d4",
+ storageBucket:"admission-da1d4.firebasestorage.app",
+ messagingSenderId:"114420767031",
+ appId:"1:114420767031:web:b8906ea7aec0e8e9d9a2b2"
+};
 let cloudApp=null,cloudAuth=null,cloudDb=null,cloudUser=null,cloudReady=false,cloudWriteTimer=null,cloudLoading=false;
 function cloudStatus(message,badge){document.querySelector('#cloudStatus').textContent=message;document.querySelector('#cloudBadge').textContent=badge}
 function setCloudControls(){const ok=!!cloudAuth;document.querySelector('#signIn').disabled=!ok;document.querySelector('#createAccount').disabled=!ok;document.querySelector('#signOut').disabled=!cloudUser}
@@ -112,5 +120,5 @@ document.querySelector('#createAccount').onclick=async()=>{try{if(!cloudAuth)thr
 document.querySelector('#signIn').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');await cloudAuth.signInWithEmailAndPassword(document.querySelector('#cloudEmail').value.trim(),document.querySelector('#cloudPassword').value)}catch(e){alert(e.message)}};
 document.querySelector('#signOut').onclick=async()=>{try{if(cloudAuth)await cloudAuth.signOut()}catch(e){cloudError(e)}};
 function renderAll(){renderStats();renderSubjects();renderList()}renderAll();
-try{const cfg=localStorage.getItem(FIREBASE_STORE);if(cfg){document.querySelector('#firebaseConfig').value=JSON.stringify(JSON.parse(cfg),null,2);connectFirebaseConfig(cfg)}}catch(e){}
+try{const cfg=localStorage.getItem(FIREBASE_STORE);if(cfg){document.querySelector('#firebaseConfig').value=JSON.stringify(JSON.parse(cfg),null,2);connectFirebaseConfig(cfg)}else{document.querySelector('#firebaseConfig').value=JSON.stringify(DEFAULT_FIREBASE_CONFIG,null,2);connectFirebaseConfig(DEFAULT_FIREBASE_CONFIG)}}catch(e){cloudError(e)}
 </script></body></html>
