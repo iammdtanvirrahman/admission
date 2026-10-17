@@ -892,7 +892,7 @@ function renderFocusStats(){
 }
 let focusTick=null,lastFocusTick=0;
 function beginFocusTick(){if(focusTick)clearInterval(focusTick);lastFocusTick=Date.now();focusTick=setInterval(()=>{const now=Date.now();if(focusData.runningSince){const delta=(now-lastFocusTick)/1000;focusLogSeconds(delta);if(focusRemaining()<=0){focusData.elapsed=Number(focusData.sessionMinutes)*60;focusData.runningSince=0;persistFocus();clearInterval(focusTick);focusTick=null;flash('Focus session complete!','ok')}persistFocus()}lastFocusTick=now;renderFocusStats()},1000)}
-function stopFocus(){if(focusData.runningSince){const now=Date.now(),delta=Math.max(0,(now-focusData.runningSince)/1000);focusLogSeconds(delta);focusData.elapsed=focusElapsed();focusData.runningSince=0;persistFocus()}if(focusTick){clearInterval(focusTick);focusTick=null}renderFocusStats()}
+function stopFocus(){if(focusData.runningSince){const now=Date.now(),delta=Math.max(0,(now-(lastFocusTick||focusData.runningSince))/1000);focusLogSeconds(delta);focusData.elapsed=focusElapsed();focusData.runningSince=0;persistFocus()}if(focusTick){clearInterval(focusTick);focusTick=null}renderFocusStats()}
 function showHubTab(tab){
   $('#hubTabs button').forEach(b=>b.classList.toggle('on',b.dataset.hubTab===tab));
   $('.hub-panel').forEach(p=>p.hidden=p.id!=='hubPanel-'+tab);
