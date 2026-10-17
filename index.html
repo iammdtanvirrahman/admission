@@ -1151,8 +1151,7 @@ function routineEntriesFor(date){
      out.push({kind:"Live exam",title:"Live quiz · "+s,detail:liveExamFmt+" · Exam window 11 PM to next day 11 PM"});
    }
  });
- ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date).forEach(x=>out.push({kind:"Upcoming/active exam",title:x.title,detail:x.detail+" · "+x.start+(x.end!==x.start?" to "+x.end:"")}));
- if(date==="2026-10-20"||date==="2026-10-21")out.unshift({kind:"Notice",title:"Durga Puja holiday",detail:"PDF note: all classes and exams remain closed."});
+ ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date).forEach(x=>out.push({kind:/holiday/i.test(x.title)?"Notice":"Upcoming/active exam",title:x.title,detail:x.detail+" · "+x.start+(x.end!==x.start?" to "+x.end:"")}));
  return out;
 }
 function routineDayLabel(date){
@@ -1181,7 +1180,7 @@ function routineTaskForDate(date){
  if(oe){
    tasks.push({id:"routine_exam_"+date,routineGenerated:true,category:"Offline exam",subject:oe.code?routineSubject(oe.code):"Mixed",name:"Attempt: "+oe.title,detail:(oe.code?routineCodeTopic(oe.code)+" · ":"")+oe.detail+"; mark wrong answers in Problems for Later.",mcqTarget:oe.mcq||0,mcqDone:0,revision:true,done:false,routineDate:date});
  }
- const todayExams=ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date);
+ const todayExams=ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date&&!/holiday/i.test(x.title));
  todayExams.forEach((x,i)=>{
    const isMonthly=/Monthly Revision Test/.test(x.title), isEngineering=/Engineering/.test(x.title);
    tasks.push({id:"routine_special_"+date+"_"+i,routineGenerated:true,category:"Exam",subject:"Mixed",name:"Exam focus: "+x.title,detail:x.detail+" · Use a timed mock, then spend at least 20 minutes analysing errors.",mcqTarget:isMonthly?0:20,mcqDone:0,revision:true,done:false,routineDate:date});
