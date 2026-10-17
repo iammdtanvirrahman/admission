@@ -1,4 +1,4 @@
-const CACHE='admissionos-v2-shell';
+const CACHE='admissionos-v3-routine-shell';
 const scope=self.registration.scope;
 const shell=new URL('index.html',scope).toString();
 self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.add(new Request(shell,{cache:'reload'}));await cache.add(new Request(scope,{cache:'reload'})).catch(()=>{});await self.skipWaiting()})())});
