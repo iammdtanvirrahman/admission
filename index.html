@@ -377,9 +377,10 @@ tfoot b{color:var(--text);font-weight:600}
         <section class="hub-panel" id="hubPanel-routine" hidden>
           <div class="hub-section-title"><div><h3>Admission Routine & Daily Quests</h3><p>Farmgate MT · Engineering + Biology Admission Program 2026 · Step 1–3</p></div><input id="routineDate" type="date" aria-label="Routine date"></div>
           <div class="hub-stats" id="routineSummary"></div>
-          <div class="hub-card" style="margin-bottom:12px"><h4>Today's quests</h4><div id="routineQuests" class="hub-list"></div></div>
+          <div class="hub-card" style="margin-bottom:12px"><div class="hub-section-title"><div><h3>Full daily routine</h3><p>Offline class/exam, live lecture and tests for the selected date.</p></div></div><div id="routineDailySchedule" class="hub-list"></div></div>
+          <div class="hub-card" style="margin-bottom:12px"><div class="hub-section-title"><div><h3>Daily reading plan & quests</h3><p>Lecture-aligned reading, timed MCQ/written practice, exam preparation and backlog recovery.</p></div><button class="btn hub-primary" id="generateRoutinePlan" type="button">Add plan to Daily Planner</button></div><div id="routineQuests" class="hub-list"></div></div>
           <div class="hub-card"><h4>Upcoming exams & milestones</h4><div id="routineEvents" class="hub-list"></div></div>
-          <p class="hub-note">Class times follow the PDF: Marathon live class EV 3:00 PM / BV 7:30 PM; live exams 11 PM to the next day 11 PM. Offline class/exam times are marked “Self Batch Time” in the source routine.</p>
+          <p class="hub-note">Source routine times: Marathon live class EV 3:00 PM / BV 7:30 PM; live exams 11 PM to the next day 11 PM. Offline classes/exams are “Self Batch Time”. The plan adds manageable reading/practice tasks; confirm actual offline timings in the Udvash app or notice.</p>
         </section>
         <section class="hub-panel" id="hubPanel-revision" hidden>
           <div class="hub-section-title"><div><h3>Smart Revision Reminder</h3><p>When a chapter's “পড়া” checkbox is first completed, reminders are scheduled for +1, +3, +7 and +14 days.</p></div><div class="hub-task-actions"><button class="btn" id="enableRevisionNotifications" type="button">Enable notifications</button><button class="btn" id="addRevisionBtn" type="button">＋ Add manually</button></div></div>
@@ -889,62 +890,328 @@ $('#signOut').addEventListener('click',async()=>{
 });
 
 
-/* ---------- AdmissionOS 2.0 routine data from the three uploaded Farmgate MT PDFs ---------- */
-const ROUTINE_EVENTS = [
- {date:'2026-10-18',title:'C-09 Offline Class + P-09 MCQ/Written',detail:'C-09 offline class; P-09 MCQ (20) + Written (10); Bio-09 Part-01+02 live exam'},
- {date:'2026-10-19',title:'M-09 Part-01',detail:'Marathon live class and live exam: M-09 Part-01 MCQ (15) + Written (10)'},
- {date:'2026-10-20',title:'Class & exam holiday',detail:'PDF note: all classes and exams closed for Durga Puja on 20–21 October'},
- {date:'2026-10-21',title:'Class & exam holiday',detail:'PDF note: all classes and exams closed for Durga Puja on 20–21 October'},
- {date:'2026-10-22',title:'M-09 offline + Monthly Revision Test-02',detail:'C-09 MCQ (20) + Written (10); Engineering Monthly Revision Test-02: PCM lectures 05–08, Written (600), 22–23 Oct; M-09 Part-02 live'},
- {date:'2026-10-23',title:'E-01 offline + C-10 Part-01',detail:'M-09 MCQ (20) + Written (10); Varsity Kha Weekly Live Exam-08 (E+GK+B), 23–24 Oct'},
- {date:'2026-10-24',title:'Monthly Revision Test-02 + C-10 Part-02',detail:'Engineering Monthly Revision Test-02 Written (600); C-10 Part-02 live exam'},
- {date:'2026-10-25',title:'M-10 offline + Weekly Exam-09',detail:'E-01 MCQ (20) + Written (2.5); Engineering Weekly Live Exam-09 (P9+C9+M9), 25–26 Oct'},
- {date:'2026-10-26',title:'Engineering Offline Weekly Exam-09',detail:'P9+C9+M9; Varsity KA and Medical Weekly Live Exam-09, 26–27 Oct'},
- {date:'2026-10-27',title:'P-10 offline + Weekly Exam-09',detail:'M-10 MCQ (20) + Written (10); Varsity KA and Medical offline Weekly Exam-09'},
- {date:'2026-10-28',title:'P-10 Part-01',detail:'Marathon live class and live exam: P-10 Part-01 MCQ (15) + Written (10)'},
- {date:'2026-10-29',title:'C-10 offline + P-10 Part-02',detail:'P-10 MCQ (20) + Written (10); C-10 Part-02 live exam'},
- {date:'2026-10-30',title:'C-11 Part-01 + Varsity Kha Revision Test-02',detail:'Varsity Kha Monthly Live Revision Test-02: Weeks 05–08, 30–31 Oct'},
- {date:'2026-10-31',title:'C-11 Part-02 + E-01 live',detail:'C-11 Part-02 MCQ (15) + Written (10); E-01 Part-01+02/Archi-11 live exam'},
- {date:'2026-11-01',title:'C-11 offline + Weekly Exam-10',detail:'C-10 MCQ (20) + Written (10); Engineering Weekly Live Exam-10 (P10+C10+M10), 1–2 Nov'},
- {date:'2026-11-02',title:'Engineering Offline Weekly Exam-10',detail:'P10+C10+M10; Varsity KA and Medical Weekly Live Exam-10, 2–3 Nov'},
- {date:'2026-11-03',title:'M-11 offline + Weekly Exam-10',detail:'C-11 MCQ (20) + Written (10); Varsity KA and Medical offline Weekly Exam-10'},
- {date:'2026-11-04',title:'P-11 Part-01',detail:'Marathon live class and live exam: P-11 Part-01 MCQ (15) + Written (10)'},
- {date:'2026-11-05',title:'P-11 offline + E-02 live',detail:'M-11 MCQ (20) + Written (10); E-02 Part-01+02 live exam'},
- {date:'2026-11-06',title:'E-02 offline + Varsity Kha Exam-09',detail:'P-11 MCQ (20) + Written (10); Varsity Kha Weekly Live Exam-09 (E+GK+B), 6–7 Nov'},
- {date:'2026-11-07',title:'M-12 Part-01 & Part-02',detail:'Both live parts and their daily live exams'},
- {date:'2026-11-08',title:'P-12 offline + Engineering Weekly Exam-11',detail:'E-02 MCQ (20) + Written (2.5); Engineering Weekly Live Exam-11 (P11+C11+M11), 8–9 Nov'},
- {date:'2026-11-09',title:'Engineering Offline Weekly Exam-11',detail:'P11+C11+M11; P-12 Part-01 live'},
- {date:'2026-11-10',title:'E-03 offline + P-12 Part-02',detail:'P-12 MCQ (20) + Written (10); P-12 Part-02 live exam'},
- {date:'2026-11-11',title:'E-03 Part-01+02 + M-13 Part-01',detail:'E-03 Part-01+02 daily live exam; M-13 Part-01 live exam'},
- {date:'2026-11-12',title:'M-12 offline + Varsity Kha Exam-10',detail:'E-03 MCQ (20) + Written (2.5); Varsity Kha Weekly Live Exam-10 (E+GK+B), 12–13 Nov'},
- {date:'2026-11-13',title:'M-13 offline + Part-02',detail:'M-12 MCQ (20) + Written (10); M-13 Part-02 live exam'},
- {date:'2026-11-14',title:'E-04 offline + live exam',detail:'M-13 MCQ (20) + Written (10); E-04 Part-01+02/Archi-14 live exam'},
- {date:'2026-11-15',title:'Engineering Offline + Live Weekly Exam-12',detail:'P12+M12+M13; Engineering Monthly Revision Test-03 (PCM lectures 09–13), Written (600), 15–17 Nov'},
- {date:'2026-11-16',title:'Engineering Monthly Revision Test-03',detail:'PCM lectures 09–13, Written (600); Varsity Kha Weekly Live Exam-11 (E+GK+B), 16–17 Nov'}
+/* ---------- Full Farmgate MT routine + syllabus-aligned daily plans (PDF Step 1–3) ---------- */
+const ROUTINE_TOPIC = {
+ P01:"ভেক্টর — লব্ধি, উপাংশ, ডট/ক্রস গুণন, Gradient/Curl/Divergence",
+ P02:"গতিবিদ্যা, ভৌত জগৎ ও পরিমাপ",
+ P03:"নিউটনীয় বলবিদ্যা — নিউটনের সূত্র, ঘর্ষণ, ভরবেগ ও বৃত্তীয় গতি",
+ P04:"বৃত্তীয় গতি — আনুভূমিক/উলম্ব বৃত্তীয় গতি, ব্যাংকিং; কাজ, শক্তি ও ক্ষমতা",
+ P05:"মহাকর্ষ ও অভিকর্ষ; পদার্থের গাঠনিক ধর্ম",
+ P06:"পর্যাবৃত্ত গতি ও তরঙ্গ",
+ P07:"তাপগতিবিদ্যা; আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব",
+ P08:"স্থির তড়িৎ; পরমাণুর মডেল ও নিউক্লীয় পদার্থবিজ্ঞান",
+ P09:"চল তড়িৎ; জ্যোতির্বিজ্ঞান",
+ P10:"তড়িৎ প্রবাহের চৌম্বক ক্রিয়া ও চুম্বকত্ব; তড়িৎচৌম্বকীয় আবেশ ও পরিবর্তী প্রবাহ",
+ P11:"জ্যামিতিক আলোকবিজ্ঞান ও ভৌত আলোকবিজ্ঞান",
+ P12:"আধুনিক পদার্থবিজ্ঞানের সূচনা; সেমিকন্ডাক্টর ও ইলেকট্রনিক্স",
+ C01:"পরিমাণগত রসায়ন — মোল, রাসায়নিক বিক্রিয়া, সহগানুপাত, ঘনমাত্রা; redox/titration ও lab safety",
+ C02:"রাসায়নিক পরিবর্তন — রাসায়নিক সাম্যাবস্থা, Kp/Kc, গতিবিদ্যা, Arrhenius equation, catalyst",
+ C03:"অম্ল-ক্ষার সাম্যাবস্থা, পরিবেশ রসায়ন ও তাপ-রসায়ন",
+ C04:"পরমাণুর মডেল, ইলেকট্রন বিন্যাস, কোয়ান্টাম সংখ্যা, দ্রাব্যতা ও গুণগত বিশ্লেষণ",
+ C05:"মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন",
+ C06:"তড়িৎ রসায়ন — পরিবাহিতা, তড়িৎ বিশ্লেষণ, Faraday-এর সূত্র, কোষ বিভব; কর্মমুখী রসায়ন",
+ C07:"পরিবেশ রসায়ন — গ্যাসের সূত্র, আংশিক চাপ, গ্যাসের গতিতত্ত্ব ও দূষক; অর্থনৈতিক রসায়ন",
+ C08:"জৈব রসায়ন — শ্রেণিবিভাগ, কার্যকরীমূলক, নামকরণ, গাঠনিক/জ্যামিতিক সমাণুতা ও বিকারক",
+ C09:"জৈব রসায়ন — অ্যালকেন, অ্যালকিন, অ্যালকাইন, aromaticity, হ্যালো-প্রভাব, benzene ও toluene",
+ C10:"জৈব রসায়ন — alkyl/aryl halide, alcohol, ether ও phenol",
+ C11:"জৈব রসায়ন — aldehyde, ketone, carboxylic acid, amine, diazonium ও IR spectroscopy",
+ M01:"সরলরেখা — স্থানাঙ্ক, রেখার সমীকরণ ও সংশ্লিষ্ট সমস্যা",
+ M02:"বৃত্ত — সমীকরণ, স্পর্শক-ছেদক ও সাধারণ স্পর্শক",
+ M03:"কনিক — পরাবৃত্ত, উপবৃত্ত ও অধিবৃত্ত",
+ M04:"বাস্তব সংখ্যা ও অসমতা; জটিল সংখ্যা",
+ M05:"ম্যাট্রিক্স ও নির্ণায়ক; বহুপদী ও বহুপদী সমীকরণ",
+ M06:"ফাংশন ও লেখচিত্র; দ্বিপদী বিস্তৃতি",
+ M07:"বিন্যাস ও সমাবেশ",
+ M08:"যোগাশ্রয়ী প্রোগ্রাম; বিস্তার পরিমাপ ও সম্ভাবনা",
+ M09:"সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত; বিপরীত ত্রিকোণমিতি ও ত্রিকোণমিতিক সমীকরণ",
+ M10:"অন্তরীকরণ — সীমা/অন্তরীকরণের পদ্ধতি",
+ M11:"যোগজীকরণ — অনির্দিষ্ট/নির্দিষ্ট যোগজ ও ক্ষেত্রফল",
+ M12:"স্থিতিবিদ্যা — বল, লব্ধি, সাম্যাবস্থা ও সংশ্লিষ্ট সমস্যা",
+ M13:"সমতলে বস্তুকণার গতি — বেগের সামান্তরিক সূত্র থেকে নদী পারাপার ও গতির সূত্র",
+ BIO01:"মানব শারীরতত্ত্ব — রক্ত ও সঞ্চালন; শ্বসন ও শ্বাসক্রিয়া",
+ BIO02:"প্রাণীর পরিচিতি — হাইড্রা, রুই মাছ ও ঘাসফড়িং",
+ BIO03:"উদ্ভিদ শারীরতত্ত্ব — খনিজ লবণ শোষণ, প্রস্বেদন, সালোকসংশ্লেষণ ও শ্বসন; উদ্ভিদ প্রজনন",
+ BIO04:"প্রাণীর বিভিন্নতা/শ্রেণিবিন্যাস; মানবদেহের প্রতিরক্ষা; জিনতত্ত্ব ও বিবর্তন",
+ BIO05:"কোষ রসায়ন; নগ্নবীজী/আবৃতবীজী উদ্ভিদ; টিস্যু ও টিস্যুতন্ত্র",
+ BIO06:"পরিপাক ও শোষণ; বর্জ্য ও নিষ্কাশন",
+ BIO07:"সমন্বয় ও নিয়ন্ত্রণ — স্নায়বিক/রাসায়নিক সমন্বয়, চোখ-কান; প্রাণীর আচরণ",
+ BIO08:"কোষ ও এর গঠন — transcription/translation; কোষ বিভাজন; জীবের পরিবেশ, বিস্তার ও সংরক্ষণ",
+ BIO09:"অণুজীব; শৈবাল ও ছত্রাক; ব্রায়োফাইটা ও টেরিডোফাইটা",
+ BIO10:"মানব শারীরতত্ত্ব — চলন ও অঙ্গচালনা; মানবজীবনের ধারাবাহিকতা; জীবপ্রযুক্তি",
+ E01:"English — noun/determiner, article, gender/number, preposition A–E, idioms/vocabulary A–E",
+ E02:"English — adjective/degree, narration, adverb/inversion, agreement, voice, preposition F–J",
+ E03:"English — verbs, modals, right form, subject-verb agreement, tense, completing sentence, preposition K–O",
+ E04:"English — phrase/clause, modifier, tag question, comprehension, analogy, transformation, suffix-prefix, correction, preposition P–Z"
+};
+const ROUTINE_OFFLINE_CLASS = {
+ "2026-08-17":"Online Orientation Class · 7:30 PM",
+ "2026-08-18":"Offline Orientation Class · Self Batch Time",
+ "2026-08-20":"M01","2026-08-23":"P01","2026-08-25":"C01","2026-08-27":"C02",
+ "2026-08-30":"M02","2026-09-01":"P02","2026-09-03":"P03","2026-09-06":"C03",
+ "2026-09-08":"M03","2026-09-10":"M04","2026-09-13":"P04","2026-09-15":"C04",
+ "2026-09-17":"C05","2026-09-20":"M05","2026-09-22":"P05","2026-09-24":"P06",
+ "2026-09-27":"C06","2026-09-29":"M06","2026-10-01":"M07","2026-10-04":"P07",
+ "2026-10-06":"C07","2026-10-08":"C08","2026-10-11":"M08","2026-10-13":"P08",
+ "2026-10-15":"P09","2026-10-18":"C09","2026-10-22":"M09","2026-10-23":"E01",
+ "2026-10-25":"M10","2026-10-27":"P10","2026-10-29":"C10","2026-11-01":"C11",
+ "2026-11-03":"M11","2026-11-05":"P11","2026-11-06":"E02","2026-11-08":"P12",
+ "2026-11-10":"E03","2026-11-12":"M12","2026-11-13":"M13","2026-11-14":"E04"
+};
+const ROUTINE_OFFLINE_EXAM = {
+ "2026-08-20":{title:"Introductory Exam",detail:"MCQ (25)",mcq:25,written:0},
+ "2026-08-23":{code:"M01",title:"M-01 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-08-25":{code:"P01",title:"P-01 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-08-27":{code:"C01",title:"C-01 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-08-30":{code:"C02",title:"C-02 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-01":{code:"M02",title:"M-02 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-03":{code:"P02",title:"P-02 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-06":{code:"P03",title:"P-03 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-08":{code:"C03",title:"C-03 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-10":{code:"M03",title:"M-03 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-13":{code:"M04",title:"M-04 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-15":{code:"P04",title:"P-04 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-17":{code:"C04",title:"C-04 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-20":{code:"C05",title:"C-05 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-22":{code:"M05",title:"M-05 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-24":{code:"P05",title:"P-05 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-27":{code:"P06",title:"P-06 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-09-29":{code:"C06",title:"C-06 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-01":{code:"M06",title:"M-06 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-04":{code:"M07",title:"M-07 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-06":{code:"P07",title:"P-07 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-08":{code:"C07",title:"C-07 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-11":{code:"C08",title:"C-08 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-13":{code:"M08",title:"M-08 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-15":{code:"P08",title:"P-08 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-18":{code:"P09",title:"P-09 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-22":{code:"C09",title:"C-09 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-23":{code:"M09",title:"M-09 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-25":{code:"E01",title:"E-01 daily offline exam",detail:"MCQ (20) + Written (2.5)",mcq:20,written:2.5},
+ "2026-10-27":{code:"M10",title:"M-10 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-10-29":{code:"P10",title:"P-10 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-01":{code:"C10",title:"C-10 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-03":{code:"C11",title:"C-11 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-05":{code:"M11",title:"M-11 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-06":{code:"P11",title:"P-11 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-08":{code:"E02",title:"E-02 daily offline exam",detail:"MCQ (20) + Written (2.5)",mcq:20,written:2.5},
+ "2026-11-10":{code:"P12",title:"P-12 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-12":{code:"E03",title:"E-03 daily offline exam",detail:"MCQ (20) + Written (2.5)",mcq:20,written:2.5},
+ "2026-11-13":{code:"M12",title:"M-12 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10},
+ "2026-11-14":{code:"M13",title:"M-13 daily offline exam",detail:"MCQ (20) + Written (10)",mcq:20,written:10}
+};
+const ROUTINE_LIVE_CLASSES = {
+ "2026-08-17":["Online Orientation Class · 7:30 PM"],
+ "2026-08-19":["P01 part 1"],"2026-08-20":["P01 part 2"],"2026-08-21":["C01 part 1"],"2026-08-22":["C01 part 2"],
+ "2026-08-23":["BIO01 parts 1–2 / Architecture-01"],"2026-08-24":["M01 part 1"],"2026-08-25":["M01 part 2"],
+ "2026-08-26":["P02 part 1","P02 part 2"],"2026-08-28":["C02 part 1"],"2026-08-29":["C02 part 2"],
+ "2026-08-30":["BIO02 parts 1–2 / Architecture-02"],"2026-08-31":["M02 part 1"],"2026-09-01":["M02 part 2"],
+ "2026-09-02":["P03 part 1","P03 part 2"],"2026-09-04":["C03 part 1"],"2026-09-05":["C03 part 2"],
+ "2026-09-06":["BIO03 parts 1–2 / Architecture-03"],"2026-09-07":["M03 part 1"],"2026-09-08":["M03 part 2"],
+ "2026-09-09":["P04 part 1","P04 part 2"],"2026-09-11":["C04 part 1"],"2026-09-12":["C04 part 2"],
+ "2026-09-13":["BIO04 parts 1–2 / Architecture-04"],"2026-09-14":["M04 part 1"],"2026-09-15":["M04 part 2"],
+ "2026-09-16":["P05 part 1","P05 part 2"],"2026-09-18":["C05 part 1"],"2026-09-19":["C05 part 2","BIO05 parts 1–2 / Architecture-05"],
+ "2026-09-21":["M05 part 1"],"2026-09-22":["M05 part 2"],"2026-09-23":["P06 part 1","P06 part 2"],
+ "2026-09-25":["C06 part 1"],"2026-09-26":["C06 part 2"],"2026-09-27":["BIO06 parts 1–2 / Architecture-06"],
+ "2026-09-28":["M06 part 1"],"2026-09-29":["M06 part 2"],"2026-09-30":["P07 part 1","P07 part 2"],
+ "2026-10-02":["C07 part 1"],"2026-10-03":["C07 part 2"],"2026-10-04":["BIO07 parts 1–2 / Architecture-07"],
+ "2026-10-05":["M07 part 1"],"2026-10-06":["M07 part 2"],"2026-10-07":["P08 part 1","P08 part 2"],
+ "2026-10-09":["C08 part 1"],"2026-10-10":["C08 part 2"],"2026-10-11":["BIO08 parts 1–2 / Architecture-08"],
+ "2026-10-12":["M08 part 1"],"2026-10-13":["M08 part 2"],"2026-10-14":["P09 part 1","P09 part 2"],
+ "2026-10-16":["C09 part 1"],"2026-10-17":["C09 part 2"],"2026-10-18":["BIO09 parts 1–2 / Architecture-09"],
+ "2026-10-19":["M09 part 1"],"2026-10-22":["M09 part 2","Engineering Monthly Revision Test-02 · PCM lectures 05–08 · Written 600 marks"],
+ "2026-10-23":["C10 part 1"],"2026-10-24":["C10 part 2","BIO10 parts 1–2 / Architecture-10"],
+ "2026-10-26":["M10 part 1"],"2026-10-27":["M10 part 2"],"2026-10-28":["P10 part 1"],
+ "2026-10-29":["P10 part 2","C11 part 1"],"2026-10-31":["C11 part 2","E01 parts 1–2 / Architecture-11"],
+ "2026-11-02":["M11 part 1"],"2026-11-03":["M11 part 2"],"2026-11-04":["P11 part 1"],
+ "2026-11-05":["P11 part 2","E02 parts 1–2 / Architecture-12"],"2026-11-07":["M12 part 1","M12 part 2"],
+ "2026-11-09":["P12 part 1"],"2026-11-10":["P12 part 2"],"2026-11-11":["E03 parts 1–2 / Architecture-13","M13 part 1"],
+ "2026-11-13":["M13 part 2"],"2026-11-14":["E04 parts 1–2 / Architecture-14"]
+};
+const ROUTINE_SPECIAL = [
+ {start:"2026-08-27",end:"2026-08-28",title:"Engineering Weekly Live Exam-01",detail:"P1 + C1 + M1"},
+ {start:"2026-08-28",end:"2026-08-29",title:"Varsity KA Weekly Live Exam-01",detail:"P1+C1+M1+Bio1/Bangla/English"},
+ {start:"2026-08-28",end:"2026-08-29",title:"Medical Weekly Live Exam-01",detail:"Bio1+C1+P1+GK+English"},
+ {start:"2026-08-28",end:"2026-08-29",title:"Varsity Kha Weekly Live Exam-01",detail:"English+GK+Bangla"},
+ {start:"2026-08-28",end:"2026-08-28",title:"Engineering Offline Weekly Exam-01",detail:"P1+C1+M1"},
+ {start:"2026-08-29",end:"2026-08-29",title:"Varsity KA & Medical Offline Weekly Exam-01",detail:"KA: P1+C1+M1+Bio1/Bangla/English · Medical: Bio1+C1+P1+GK+English"},
+ {start:"2026-09-03",end:"2026-09-04",title:"Engineering Weekly Live Exam-02",detail:"P2+C2+M2"},
+ {start:"2026-09-04",end:"2026-09-05",title:"Varsity KA Weekly Live Exam-02",detail:"P2+C2+M2+Bio2/Bangla/English"},
+ {start:"2026-09-04",end:"2026-09-05",title:"Medical Weekly Live Exam-02",detail:"Bio2+C2+P2+GK+English"},
+ {start:"2026-09-04",end:"2026-09-05",title:"Varsity Kha Weekly Live Exam-02",detail:"English+GK+Bangla"},
+ {start:"2026-09-04",end:"2026-09-04",title:"Engineering Offline Weekly Exam-02",detail:"P2+C2+M2"},
+ {start:"2026-09-05",end:"2026-09-05",title:"Varsity KA & Medical Offline Weekly Exam-02",detail:"KA: P2+C2+M2+Bio2/Bangla/English · Medical: Bio2+C2+P2+GK+English"},
+ {start:"2026-09-10",end:"2026-09-11",title:"Engineering Weekly Live Exam-03",detail:"P3+C3+M3"},
+ {start:"2026-09-11",end:"2026-09-12",title:"Varsity KA Weekly Live Exam-03",detail:"P3+C3+M3+Bio3/Bangla/English"},
+ {start:"2026-09-11",end:"2026-09-12",title:"Medical Weekly Live Exam-03",detail:"Bio3+C3+P3+GK+English"},
+ {start:"2026-09-11",end:"2026-09-12",title:"Varsity Kha Weekly Live Exam-03",detail:"English+GK+Bangla"},
+ {start:"2026-09-11",end:"2026-09-11",title:"Engineering Offline Weekly Exam-03",detail:"P3+C3+M3"},
+ {start:"2026-09-12",end:"2026-09-12",title:"Varsity KA & Medical Offline Weekly Exam-03",detail:"KA: P3+C3+M3+Bio3/Bangla/English · Medical: Bio3+C3+P3+GK+English"},
+ {start:"2026-09-17",end:"2026-09-18",title:"Engineering Weekly Live Exam-04",detail:"P4+C4+M4"},
+ {start:"2026-09-18",end:"2026-09-19",title:"Varsity KA Weekly Live Exam-04",detail:"P4+C4+M4+Bio4/Bangla/English"},
+ {start:"2026-09-18",end:"2026-09-19",title:"Medical Weekly Live Exam-04",detail:"Bio4+C4+P4+GK+English"},
+ {start:"2026-09-18",end:"2026-09-19",title:"Varsity Kha Weekly Live Exam-04",detail:"English+GK+Bangla"},
+ {start:"2026-09-18",end:"2026-09-18",title:"Engineering Offline Weekly Exam-04",detail:"P4+C4+M4"},
+ {start:"2026-09-19",end:"2026-09-19",title:"Varsity KA & Medical Offline Weekly Exam-04",detail:"KA: P4+C4+M4+Bio4/Bangla/English · Medical: Bio4+C4+P4+GK+English"},
+ {start:"2026-09-20",end:"2026-09-21",title:"Engineering Monthly Revision Test-01",detail:"PCM lectures 01–04 · Written 600 marks"},
+ {start:"2026-09-24",end:"2026-09-25",title:"Engineering Weekly Live Exam-05",detail:"P5+C5+M5"},
+ {start:"2026-09-25",end:"2026-09-26",title:"Varsity KA Weekly Live Exam-05",detail:"P5+C5+M5+Bio5/Bangla/English"},
+ {start:"2026-09-25",end:"2026-09-26",title:"Medical Weekly Live Exam-05",detail:"Bio5+C5+P5+GK+English"},
+ {start:"2026-09-25",end:"2026-09-25",title:"Engineering Offline Weekly Exam-05",detail:"P5+C5+M5"},
+ {start:"2026-09-25",end:"2026-09-26",title:"Varsity Kha Monthly Live Revision Test-01",detail:"Weeks 01–04"},
+ {start:"2026-09-26",end:"2026-09-26",title:"Varsity KA & Medical Offline Weekly Exam-05",detail:"KA: P5+C5+M5+Bio5/Bangla/English · Medical: Bio5+C5+P5+GK+English"},
+ {start:"2026-10-01",end:"2026-10-02",title:"Engineering Weekly Live Exam-06",detail:"P6+C6+M6"},
+ {start:"2026-10-02",end:"2026-10-03",title:"Varsity KA Weekly Live Exam-06",detail:"P6+C6+M6+Bio6/Bangla/English"},
+ {start:"2026-10-02",end:"2026-10-03",title:"Medical Weekly Live Exam-06",detail:"Bio6+C6+P6+GK+English"},
+ {start:"2026-10-02",end:"2026-10-03",title:"Varsity Kha Weekly Live Exam-05",detail:"English+GK+Bangla"},
+ {start:"2026-10-02",end:"2026-10-02",title:"Engineering Offline Weekly Exam-06",detail:"P6+C6+M6"},
+ {start:"2026-10-03",end:"2026-10-03",title:"Varsity KA & Medical Offline Weekly Exam-06",detail:"KA: P6+C6+M6+Bio6/Bangla/English · Medical: Bio6+C6+P6+GK+English"},
+ {start:"2026-10-08",end:"2026-10-09",title:"Engineering Weekly Live Exam-07",detail:"P7+C7+M7"},
+ {start:"2026-10-09",end:"2026-10-10",title:"Varsity KA Weekly Live Exam-07",detail:"P7+C7+M7+Bio7/Bangla/English"},
+ {start:"2026-10-09",end:"2026-10-10",title:"Medical Weekly Live Exam-07",detail:"Bio7+C7+P7+GK+English"},
+ {start:"2026-10-09",end:"2026-10-10",title:"Varsity Kha Weekly Live Exam-06",detail:"English+GK+Bangla"},
+ {start:"2026-10-09",end:"2026-10-09",title:"Engineering Offline Weekly Exam-07",detail:"P7+C7+M7"},
+ {start:"2026-10-10",end:"2026-10-10",title:"Varsity KA & Medical Offline Weekly Exam-07",detail:"KA: P7+C7+M7+Bio7/Bangla/English · Medical: Bio7+C7+P7+GK+English"},
+ {start:"2026-10-15",end:"2026-10-16",title:"Engineering Weekly Live Exam-08",detail:"P8+C8+M8"},
+ {start:"2026-10-16",end:"2026-10-17",title:"Varsity KA Weekly Live Exam-08",detail:"P8+C8+M8+Bio8/Bangla/English"},
+ {start:"2026-10-16",end:"2026-10-17",title:"Medical Weekly Live Exam-08",detail:"Bio8+C8+P8+GK+English"},
+ {start:"2026-10-16",end:"2026-10-17",title:"Varsity Kha Weekly Live Exam-07",detail:"English+GK+Bangla"},
+ {start:"2026-10-16",end:"2026-10-16",title:"Engineering Offline Weekly Exam-08",detail:"P8+C8+M8"},
+ {start:"2026-10-17",end:"2026-10-17",title:"Varsity KA & Medical Offline Weekly Exam-08",detail:"KA: P8+C8+M8+Bio8/Bangla/English · Medical: Bio8+C8+P8+GK+English"},
+ {start:"2026-10-20",end:"2026-10-21",title:"Durga Puja holiday",detail:"The PDF states all classes and exams are closed on 20 and 21 October."},
+ {start:"2026-10-22",end:"2026-10-24",title:"Engineering Monthly Revision Test-02",detail:"PCM lectures 05–08 · Written 600 marks (the PDF schedule spans the 22–24 October block)"},
+ {start:"2026-10-23",end:"2026-10-24",title:"Varsity Kha Weekly Live Exam-08",detail:"English+GK+Bangla"},
+ {start:"2026-10-25",end:"2026-10-26",title:"Engineering Weekly Live Exam-09",detail:"P9+C9+M9"},
+ {start:"2026-10-26",end:"2026-10-27",title:"Varsity KA Weekly Live Exam-09",detail:"P9+C9+M9+Bio9/Bangla/English"},
+ {start:"2026-10-26",end:"2026-10-27",title:"Medical Weekly Live Exam-09",detail:"Bio9+C9+P9+GK+English"},
+ {start:"2026-10-26",end:"2026-10-26",title:"Engineering Offline Weekly Exam-09",detail:"P9+C9+M9"},
+ {start:"2026-10-27",end:"2026-10-27",title:"Varsity KA & Medical Offline Weekly Exam-09",detail:"KA: P9+C9+M9+Bio9/Bangla/English · Medical: Bio9+C9+P9+GK+English"},
+ {start:"2026-10-30",end:"2026-10-31",title:"Varsity Kha Monthly Live Revision Test-02",detail:"Weeks 05–08"},
+ {start:"2026-11-01",end:"2026-11-02",title:"Engineering Weekly Live Exam-10",detail:"P10+C10+M10"},
+ {start:"2026-11-02",end:"2026-11-03",title:"Varsity KA Weekly Live Exam-10",detail:"P10+C10+M10+Bio10/Bangla/English"},
+ {start:"2026-11-02",end:"2026-11-03",title:"Medical Weekly Live Exam-10",detail:"Bio10+C10+P10+GK+English"},
+ {start:"2026-11-02",end:"2026-11-02",title:"Engineering Offline Weekly Exam-10",detail:"P10+C10+M10"},
+ {start:"2026-11-03",end:"2026-11-03",title:"Varsity KA & Medical Offline Weekly Exam-10",detail:"KA: P10+C10+M10+Bio10/Bangla/English · Medical: Bio10+C10+P10+GK+English"},
+ {start:"2026-11-06",end:"2026-11-07",title:"Varsity Kha Weekly Live Exam-09",detail:"English+GK+Bangla"},
+ {start:"2026-11-08",end:"2026-11-09",title:"Engineering Weekly Live Exam-11",detail:"P11+C11+M11"},
+ {start:"2026-11-09",end:"2026-11-09",title:"Engineering Offline Weekly Exam-11",detail:"P11+C11+M11"},
+ {start:"2026-11-12",end:"2026-11-13",title:"Varsity Kha Weekly Live Exam-10",detail:"English+GK+Bangla"},
+ {start:"2026-11-15",end:"2026-11-16",title:"Engineering Weekly Live Exam-12",detail:"P12+M12+M13 (the PDF label does not list C12)"},
+ {start:"2026-11-15",end:"2026-11-15",title:"Engineering Offline Weekly Exam-12",detail:"P12+M12+M13"},
+ {start:"2026-11-15",end:"2026-11-17",title:"Engineering Monthly Revision Test-03",detail:"PCM lectures 09–13 · Written 600 marks"},
+ {start:"2026-11-16",end:"2026-11-17",title:"Varsity Kha Weekly Live Exam-11",detail:"English+GK+Bangla"}
 ];
-const ROUTINE_CATCHUP = [
- {title:'Physics catch-up',detail:'Revise P-03 to P-05 topics from the Step-1/2 sequence; solve MCQ + written questions.',mcq:30},
- {title:'Chemistry catch-up',detail:'Revise C-03 to C-05 topics from the Step-1/2 sequence; solve MCQ + written questions.',mcq:30},
- {title:'Higher Math catch-up',detail:'Review M-03 to M-05 lectures and practice mixed problems.',mcq:25},
- {title:'Exam error log',detail:'Review mistakes from previous MCQ/written exams and add unresolved questions to Problems for Later.',mcq:15}
+const ROUTINE_BACKLOG = [
+ {code:"P04",detail:"Circular motion (horizontal/vertical, banking) + work, energy and power",mcq:20},
+ {code:"C04",detail:"Atomic model/electron configuration; solubility and qualitative analysis",mcq:20},
+ {code:"M04",detail:"Real numbers/inequalities and complex numbers",mcq:20},
+ {code:"C05",detail:"Periodicity and chemical bonding",mcq:20},
+ {code:"M05",detail:"Matrices/determinants and polynomial equations",mcq:20},
+ {code:"P05",detail:"Gravitation and properties of matter",mcq:20},
+ {code:"P06",detail:"Periodic motion and waves",mcq:20},
+ {code:"C06",detail:"Electrochemistry and applied chemistry",mcq:20},
+ {code:"M06",detail:"Function graphs and binomial expansion",mcq:20},
+ {code:"BIO05",detail:"Cell chemistry, plant groups and tissue systems",mcq:25}
 ];
-function routineDateValue(){return $('#routineDate').value||localDate()}
-function renderRoutine(){
- const date=routineDateValue(),todayEvents=ROUTINE_EVENTS.filter(x=>x.date===date),upcoming=ROUTINE_EVENTS.filter(x=>x.date>=date).slice(0,8);
- $('#routineSummary').innerHTML='<div class="hub-stat"><span>Selected date</span><strong>'+esc(date)+'</strong></div><div class="hub-stat"><span>Events today</span><strong>'+todayEvents.length+'</strong></div><div class="hub-stat"><span>Next milestones</span><strong>'+upcoming.length+'</strong></div>';
- const quests= date < '2026-10-18' ? ROUTINE_CATCHUP : (todayEvents.length ? todayEvents.map(x=>({title:x.title,detail:x.detail,mcq:30})) : [
- {title:'Physics daily quest',detail:'30 MCQs + review wrong answers from the next Physics lecture.',mcq:30},
- {title:'Chemistry daily quest',detail:'30 MCQs + revise reactions/formulae from the current chapter.',mcq:30},
- {title:'Higher Math daily quest',detail:'25 problems; write out full solutions for the hardest 5.',mcq:25},
- {title:'Spaced revision',detail:'Complete one due revision and review the error log.',mcq:0}
- ]);
- const questKey='admissionOS2_routine_'+date;let questState={};try{questState=JSON.parse(localStorage.getItem(questKey)||'{}')}catch(e){}
- $('#routineQuests').innerHTML=quests.map((q,i)=>'<article class="hub-task'+(questState[i]?' done':'')+'"><input type="checkbox" data-quest="'+i+'" '+(questState[i]?'checked':'')+' aria-label="Quest complete"><div><h4>'+esc(q.title)+'</h4><p>'+esc(q.detail)+(q.mcq?' · Target '+q.mcq+' questions':'')+'</p></div><span class="problem-hint">'+(questState[i]?'Done':'Quest')+'</span></article>').join('');
- $('#routineEvents').innerHTML=upcoming.length?upcoming.map(x=>'<article class="hub-task"><div class="dot '+(x.date===date?'ok':'busy')+'"></div><div><h4>'+esc(x.date)+' · '+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></div><button type="button" class="btn" data-routine-date="'+x.date+'">Plan day</button></article>').join(''):'<div class="hub-empty">এই routine window-তে আর কোনো listed milestone নেই।</div>';
+function routineCodeLabel(raw){
+ const m=String(raw||"").match(/^(BIO|P|C|M|E)0?(\d+)/i);
+ if(!m)return String(raw||"");
+ return m[1].toUpperCase()+String(Number(m[2])).padStart(m[1].toUpperCase()==="BIO"?2:2,"0");
 }
-$('#routineDate').addEventListener('change',renderRoutine);
-$('#routineQuests').addEventListener('change',e=>{if(!e.target.matches('[data-quest]'))return;const k='admissionOS2_routine_'+routineDateValue();let s={};try{s=JSON.parse(localStorage.getItem(k)||'{}')}catch(x){}s[e.target.dataset.quest]=e.target.checked;localStorage.setItem(k,JSON.stringify(s));renderRoutine()});
-$('#routineEvents').addEventListener('click',e=>{const b=e.target.closest('[data-routine-date]');if(!b)return;$('#planDate').value=b.dataset.routineDate;showHubTab('planner');flash('Planner date set to '+b.dataset.routineDate,'ok')});
+function routineCodeTopic(raw){
+ const code=routineCodeLabel(raw);
+ return ROUTINE_TOPIC[code]||code;
+}
+function routineSubject(raw){
+ const c=routineCodeLabel(raw);
+ if(c.startsWith("P"))return "Physics";
+ if(c.startsWith("C"))return "Chemistry";
+ if(c.startsWith("M"))return "Higher Math";
+ if(c.startsWith("BIO"))return "Biology";
+ if(c.startsWith("E"))return "English";
+ return "General";
+}
+function routineDateRange(){
+ const out=[];let d=new Date("2026-08-17T12:00:00"),last=new Date("2026-11-16T12:00:00");
+ while(d<=last){out.push(localDate(d));d.setDate(d.getDate()+1)}
+ return out;
+}
+function routineEntriesFor(date){
+ const out=[];
+ const off=ROUTINE_OFFLINE_CLASS[date];
+ if(off)out.push({kind:"Offline class",title:/Orientation/.test(off)?off:off+" · "+routineCodeTopic(off),detail:"Self Batch Time"});
+ const exam=ROUTINE_OFFLINE_EXAM[date];
+ if(exam)out.push({kind:"Offline exam",title:exam.title,detail:(exam.code?routineCodeTopic(exam.code)+" · ":"")+exam.detail});
+ const live=ROUTINE_LIVE_CLASSES[date]||[];
+ live.forEach(s=>{
+   const codes=String(s).match(/(?:BIO|P|C|M|E)0?\d+/gi)||[];
+   const topic=codes.map(c=>routineCodeLabel(c)+" — "+routineCodeTopic(c)).join("; ");
+   out.push({kind:"Marathon live class",title:s,detail:(topic?topic+" · ":"")+(s.includes("Orientation")?"7:30 PM": "EV 3:00 PM / BV 7:30 PM")});
+   if(codes.length){
+     const liveExamFmt=codes.some(c=>/^BIO/i.test(c))?"MCQ (30) + Written (5)":codes.some(c=>/^E/i.test(c))?"MCQ (30) + Written (5)":"MCQ (15) + Written (10) per lecture part";
+     out.push({kind:"Live exam",title:"Live quiz · "+s,detail:liveExamFmt+" · Exam window 11 PM to next day 11 PM"});
+   }
+ });
+ ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date).forEach(x=>out.push({kind:"Upcoming/active exam",title:x.title,detail:x.detail+" · "+x.start+(x.end!==x.start?" to "+x.end:"")}));
+ if(date==="2026-10-20"||date==="2026-10-21")out.unshift({kind:"Notice",title:"Durga Puja holiday",detail:"PDF note: all classes and exams remain closed."});
+ return out;
+}
+function routineDayLabel(date){
+ const d=new Date(date+"T12:00:00");
+ return d.toLocaleDateString("en-GB",{weekday:"short",day:"2-digit",month:"short",year:"numeric"});
+}
+function routineTaskForDate(date){
+ const events=routineEntriesFor(date),tasks=[];
+ const live=(ROUTINE_LIVE_CLASSES[date]||[]).filter(s=>/(?:BIO|P|C|M|E)0?\d+/i.test(s));
+ live.forEach(s=>{
+   const codes=(s.match(/(?:BIO|P|C|M|E)0?\d+/gi)||[]).map(routineCodeLabel);
+   const code=codes[0],sub=routineSubject(code);
+   if(!code)return;
+   const topical=codes.map(c=>c+" — "+routineCodeTopic(c)).join("; ");
+   const isBio=codes.some(c=>c.startsWith("BIO"));
+   const isMulti=codes.length>1;
+   tasks.push({id:"routine_read_"+date+"_"+code+"_"+tasks.length,routineGenerated:true,category:"Reading",subject:sub,name:"Read & annotate: "+topical,detail:"Lecture-linked reading: make a 1-page concept/formula summary and mark 3 uncertain points.",mcqTarget:0,mcqDone:0,revision:false,done:false,routineDate:date});
+   tasks.push({id:"routine_quiz_"+date+"_"+code+"_"+tasks.length,routineGenerated:true,category:"Daily quiz",subject:sub,name:"Timed quiz: "+codes.join(" + "),detail:isBio?"Attempt 30 MCQ + 2 short written questions (5 marks total).":"Attempt "+(isMulti?15*codes.length:15)+" MCQ + written practice for each scheduled part; review every wrong answer.",mcqTarget:isBio?30:15*codes.length,mcqDone:0,revision:true,done:false,routineDate:date});
+ });
+ const offline=ROUTINE_OFFLINE_CLASS[date];
+ if(offline&&!/Orientation/.test(offline)){
+   const c=routineCodeLabel(offline);
+   tasks.push({id:"routine_offline_"+date+"_"+c,routineGenerated:true,category:"Offline class",subject:routineSubject(c),name:"Prepare / consolidate: "+c,detail:routineCodeTopic(c)+" · Before class: preview headings; after class: rewrite the key method/formula and solve 5 examples.",mcqTarget:10,mcqDone:0,revision:false,done:false,routineDate:date});
+ }
+ const oe=ROUTINE_OFFLINE_EXAM[date];
+ if(oe){
+   tasks.push({id:"routine_exam_"+date,routineGenerated:true,category:"Offline exam",subject:oe.code?routineSubject(oe.code):"Mixed",name:"Attempt: "+oe.title,detail:(oe.code?routineCodeTopic(oe.code)+" · ":"")+oe.detail+"; mark wrong answers in Problems for Later.",mcqTarget:oe.mcq||0,mcqDone:0,revision:true,done:false,routineDate:date});
+ }
+ const todayExams=ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date);
+ todayExams.forEach((x,i)=>{
+   const isMonthly=/Monthly Revision Test/.test(x.title), isEngineering=/Engineering/.test(x.title);
+   tasks.push({id:"routine_special_"+date+"_"+i,routineGenerated:true,category:"Exam",subject:"Mixed",name:"Exam focus: "+x.title,detail:x.detail+" · Use a timed mock, then spend at least 20 minutes analysing errors.",mcqTarget:isMonthly?0:20,mcqDone:0,revision:true,done:false,routineDate:date});
+ });
+ if(!tasks.length)tasks.push({id:"routine_review_"+date,routineGenerated:true,category:"Revision",subject:"Mixed",name:"Active recall + mixed practice",detail:"Revise one current P/C/M/Bio module, solve 30 mixed MCQs and write down mistakes.",mcqTarget:30,mcqDone:0,revision:true,done:false,routineDate:date});
+ tasks.push({id:"routine_errorlog_"+date,routineGenerated:true,category:"Review",subject:"Mixed",name:"Error-log review",detail:"Review yesterday's wrong MCQ/written answers; re-solve at least 5 without looking at solutions.",mcqTarget:5,mcqDone:0,revision:true,done:false,routineDate:date});
+ const back=ROUTINE_BACKLOG[(Math.floor((new Date(date+"T12:00:00")-new Date("2026-10-18T12:00:00"))/86400000)+ROUTINE_BACKLOG.length)%ROUTINE_BACKLOG.length];
+ tasks.push({id:"routine_backlog_"+date+"_"+back.code,routineGenerated:true,category:"Catch-up",subject:routineSubject(back.code),name:"Backlog sprint: "+back.code+" — "+routineCodeTopic(back.code),detail:back.detail+" · 35–45 min focused slot, then mark one unresolved item for tomorrow.",mcqTarget:back.mcq,mcqDone:0,revision:true,done:false,routineDate:date});
+ return tasks;
+}
+function routineDateValue(){return $("#routineDate").value||localDate()}
+function renderRoutine(){
+ const date=routineDateValue(),entries=routineEntriesFor(date),lessons=entries.filter(x=>x.kind==="Marathon live class").length,exams=entries.filter(x=>/exam|quiz/i.test(x.kind)).length;
+ $("#routineSummary").innerHTML='<div class="hub-stat"><span>Selected date</span><strong>'+esc(routineDayLabel(date))+'</strong></div><div class="hub-stat"><span>Class items</span><strong>'+lessons+'</strong></div><div class="hub-stat"><span>Exam / quiz items</span><strong>'+exams+'</strong></div>';
+ $("#routineDailySchedule").innerHTML=entries.length?entries.map(x=>'<article class="hub-task"><div class="dot '+(/exam|quiz/i.test(x.kind)?"busy":x.kind==="Notice"?"":"ok")+'"></div><div><h4>'+esc(x.kind)+" · "+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></div></article>').join(''):'<div class="hub-empty">এই তারিখের জন্য PDF-এ class/exam entry পাওয়া যায়নি।</div>';
+ const tasks=routineTaskForDate(date);
+ const stateKey="admissionOS2_routine_quests_"+date;let state={};try{state=JSON.parse(localStorage.getItem(stateKey)||"{}")}catch(e){}
+ $("#routineQuests").innerHTML=tasks.map((q,i)=>'<article class="hub-task'+(state[q.id]?" done":"")+'"><input type="checkbox" data-routine-quest="'+esc(q.id)+'" '+(state[q.id]?"checked":"")+' aria-label="Quest complete"><div><h4>'+esc(q.category)+" · "+esc(q.name)+'</h4><p>'+esc(q.detail)+(q.mcqTarget?" · MCQ target "+q.mcqTarget:"")+'</p></div><span class="problem-hint">'+(state[q.id]?"Done":"Quest")+'</span></article>').join('');
+ const upcoming=ROUTINE_SPECIAL.filter(x=>x.end>=date).sort((x,y)=>x.start.localeCompare(y.start)).slice(0,10);
+ $("#routineEvents").innerHTML=upcoming.length?upcoming.map(x=>'<article class="hub-task"><div class="dot busy"></div><div><h4>'+esc(x.start)+(x.end!==x.start?" – "+esc(x.end):"")+" · "+esc(x.title)+'</h4><p>'+esc(x.detail)+'</p></div><button type="button" class="btn" data-routine-date="'+esc(x.start)+'">Plan date</button></article>').join(''):'<div class="hub-empty">PDF routine window-তে আর listed milestone নেই।</div>';
+}
+$("#routineDate").addEventListener("change",renderRoutine);
+$("#routineQuests").addEventListener("change",e=>{const id=e.target.dataset.routineQuest;if(!id)return;const key="admissionOS2_routine_quests_"+routineDateValue();let state={};try{state=JSON.parse(localStorage.getItem(key)||"{}")}catch(x){}state[id]=e.target.checked;localStorage.setItem(key,JSON.stringify(state));renderRoutine()});
+$("#routineEvents").addEventListener("click",e=>{const b=e.target.closest("[data-routine-date]");if(!b)return;$("#routineDate").value=b.dataset.routineDate;renderRoutine()});
+$("#generateRoutinePlan").addEventListener("click",()=>{
+ const date=routineDateValue(),existing=Array.isArray(studyPlans[date])?studyPlans[date]:[];
+ const kept=existing.filter(x=>!x.routineGenerated),newTasks=routineTaskForDate(date);
+ studyPlans[date]=kept.concat(newTasks);
+ $("#planDate").value=date;persistPlans();showHubTab("planner");flash("Routine-based daily plan added for "+date,"ok");
+});
 /* ---------- AdmissionOS 2.0 tools ---------- */
 let hubCloudTimer=0;
 function queueHubCloud(){
