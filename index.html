@@ -15,14 +15,18 @@
 <section class="stats"><div class="stat"><div class="n" id="chapterCount">0</div><div class="label">মোট অধ্যায়</div></div><div class="stat"><div class="n" id="studyDone">0</div><div class="label">পড়া শেষ</div></div><div class="stat"><div class="n" id="revisionDone">0</div><div class="label">Revision সম্পন্ন</div></div><div class="stat"><div class="n" id="fullDone">0</div><div class="label">সম্পূর্ণ অধ্যায়</div></div></section>
 <section class="subjectCard" style="padding:18px;margin-bottom:18px">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0 0 4px;font-size:20px">☁️ সব ডিভাইসে Progress Sync</h2><div class="sub" id="cloudStatus">এখনও Cloud Sync সেটআপ করা হয়নি — আপাতত এই ব্রাউজারে সেভ হচ্ছে।</div></div><span class="pill" id="cloudBadge">LOCAL ONLY</span></div>
-<details style="margin-top:14px"><summary style="cursor:pointer;color:#b9c5ff">Firebase সেটআপ / লগইন</summary>
-<p class="sub">একবার Firebase Web App config যোগ করো, তারপর একই ইমেইল দিয়ে সব ডিভাইসে লগইন করলেই progress sync হবে।</p>
+<div id="authPanel" style="margin-top:14px;padding:16px;background:#0b111b;border:1px solid var(--line);border-radius:14px">
+<h3 style="margin:0 0 6px">তোমার অ্যাকাউন্ট</h3><p class="sub" style="margin:0 0 12px">সব ডিভাইসে একই অগ্রগতি পেতে একই ইমেইল দিয়ে লগইন করো।</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px"><input id="cloudEmail" type="email" placeholder="ইমেইল" autocomplete="email" style="background:#111723;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px"><input id="cloudPassword" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password" style="background:#111723;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" id="createAccount">নতুন অ্যাকাউন্ট</button><button class="btn" id="signIn">লগইন</button><button class="btn" id="signOut">লগআউট</button></div>
+<div class="note" id="authHint">প্রথমবার হলে নতুন অ্যাকাউন্ট তৈরি করো।</div>
+</div>
+<details style="margin-top:14px"><summary style="cursor:pointer;color:#b9c5ff">Advanced: Firebase Config</summary>
+<p class="sub">তোমার Firebase Web App configuration</p>
 <label class="sub" for="firebaseConfig" style="display:block;margin:10px 0 5px">Firebase Web App config (JSON)</label>
 <textarea id="firebaseConfig" rows="5" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","appId":"..."}' style="width:100%;background:#0b111b;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:13px/1.5 monospace"></textarea>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="connectFirebase">Config Save & Connect</button><button class="btn" id="disconnectFirebase">Cloud Config মুছুন</button></div>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:12px"><input id="cloudEmail" type="email" placeholder="ইমেইল" autocomplete="email" style="background:#0b111b;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px"><input id="cloudPassword" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password" style="background:#0b111b;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px"></div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="createAccount">নতুন অ্যাকাউন্ট</button><button class="btn" id="signIn">লগইন</button><button class="btn" id="signOut">লগআউট</button></div>
-<div class="note">নিরাপত্তা: Firebase Console-এ Authentication → Email/Password চালু করো, Firestore Database তৈরি করো এবং নিচে দেওয়া secure rules বসাও। Config-এ private key থাকে না; ডেটা নিরাপদ রাখতে Firestore Rules জরুরি।</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="connectFirebase">Config Save & Connect</button><button class="btn" id="disconnectFirebase">Config মুছুন</button></div>
+<div class="note">Firebase Console-এ Authentication → Email/Password চালু এবং Firestore Database ও secure Rules সেটআপ করা আবশ্যক।</div>
 </details></section>
 <div class="toolbar"><input id="search" placeholder="অধ্যায় খুঁজুন…"><select id="paperFilter"><option value="all">সব পত্র</option><option value="1">১ম পত্র</option><option value="2">২য় পত্র</option></select><select id="statusFilter"><option value="all">সব অধ্যায়</option><option value="pending">অসম্পূর্ণ</option><option value="study">পড়া শেষ</option><option value="revision">Revision বাকি</option><option value="complete">সম্পূর্ণ</option></select><button class="btn" id="exportBtn">ডেটা Export</button><button class="btn" id="importBtn">Import</button><input type="file" id="importFile" accept="application/json" hidden></div>
 <div class="layout"><nav class="sidebar" id="subjects"></nav><section><div class="contentHead"><div><h2 id="listTitle">Physics</h2><div class="sub" id="listSub">অধ্যায়ের অগ্রগতি</div></div><select id="sortFilter"><option value="default">বইয়ের ক্রম</option><option value="pending">অসম্পূর্ণ আগে</option><option value="complete">সম্পূর্ণ আগে</option></select></div><div class="chapterList" id="chapterList"></div><div class="note">নোট: বোর্ড/বইয়ের সংস্করণভেদে অধ্যায়ের নাম বা বিন্যাসে সামান্য পার্থক্য হতে পারে। তোমার নির্দিষ্ট ভর্তি পরীক্ষার সিলেবাস অনুযায়ী তালিকা যাচাই করে নিও।</div></section></div>
@@ -70,7 +74,7 @@ function connectFirebaseConfig(raw){
   localStorage.setItem(FIREBASE_STORE,JSON.stringify(cfg));
   document.querySelector('#firebaseConfig').value=JSON.stringify(cfg,null,2);
   cloudAuth.onAuthStateChanged(async user=>{
-   cloudUser=user||null;setCloudControls();
+   cloudUser=user||null;setCloudControls();document.querySelector('#authHint').textContent=user?'লগইন হয়েছে: '+user.email:'প্রথমবার হলে নতুন অ্যাকাউন্ট তৈরি করো, পরে লগইন করো।';
    if(!user){cloudStatus('Firebase সংযুক্ত। সব ডিভাইসে sync করতে একই account দিয়ে লগইন করো।','SIGNED OUT');return}
    cloudLoading=true;cloudStatus('Cloud থেকে progress আনা হচ্ছে…','SYNCING');
    try{
