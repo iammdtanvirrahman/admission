@@ -205,6 +205,13 @@ tfoot b{color:var(--text);font-weight:600}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
+
+.problem-btn{display:inline-flex;align-items:center;gap:4px;margin-left:7px;padding:3px 7px;border:1px solid #342329;border-radius:6px;background:#160c0f;color:#ff8290;font-size:11px;font-weight:600;vertical-align:middle;white-space:nowrap}
+.problem-backdrop{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.78);backdrop-filter:blur(8px)}
+.problem-dialog{display:flex;flex-direction:column;width:min(620px,100%);max-height:88dvh;overflow:hidden;border:1px solid #39393f;border-radius:16px;background:#0c0c0e;box-shadow:0 24px 90px #000}
+.problem-head{display:flex;align-items:flex-start;gap:12px;padding:18px;border-bottom:1px solid var(--line-hi)}.problem-head h2{margin:0;font-size:17px}.problem-sub{margin-top:4px;color:var(--muted);font-size:12px}.problem-close{margin-left:auto;width:34px;height:34px;border:1px solid var(--line-hi);border-radius:9px;color:var(--muted)}
+.problem-body{padding:16px;overflow:auto}.problem-label{display:block;margin:0 0 7px;color:#c8c8ce;font-size:12px;font-weight:600}.problem-input{display:block;width:100%;min-height:95px;padding:11px;border:1px solid var(--line-hi);border-radius:10px;outline:none;background:#050506;color:var(--text);resize:vertical;font:inherit}.problem-input:focus{border-color:#ff5d6c}.problem-compose{display:grid;gap:12px}.problem-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.problem-file{max-width:100%;font-size:12px;color:var(--muted)}.problem-hint{color:var(--dim);font-size:11px}.problem-list{display:grid;gap:9px;margin-top:18px}.problem-item{padding:12px;border:1px solid var(--line-hi);border-radius:11px;background:#101012}.problem-item.solved{opacity:.68}.problem-item-top{display:flex;align-items:center;gap:8px}.problem-item-top .state{margin-left:auto;color:#ff8290;font-size:11px}.problem-item.solved .state{color:var(--green-hi)}.problem-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.problem-image{display:block;max-width:100%;max-height:260px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}.problem-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.problem-item-actions button{padding:6px 9px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:11px}.problem-empty{padding:20px;border:1px dashed var(--line-hi);border-radius:10px;color:var(--muted);text-align:center;font-size:13px}
+@media(max-width:640px){.problem-backdrop{align-items:flex-end;padding:0}.problem-dialog{width:100%;max-height:92dvh;border-radius:16px 16px 0 0}.problem-head{padding:16px}.problem-body{padding:13px}.problem-btn{margin-left:4px;padding:3px 5px;font-size:10px}}
 </style>
 </head>
 <body>
@@ -328,6 +335,18 @@ tfoot b{color:var(--text);font-weight:600}
 
 </div>
 
+<div class="problem-backdrop" id="problemBackdrop" hidden>
+<section class="problem-dialog" role="dialog" aria-modal="true" aria-labelledby="problemTitle">
+<header class="problem-head"><div><h2 id="problemTitle">Problems for Later</h2><div class="problem-sub" id="problemChapter"></div></div><button class="problem-close" id="problemClose" type="button" aria-label="Close">✕</button></header>
+<div class="problem-body">
+<form class="problem-compose" id="problemForm">
+<div><label class="problem-label" for="problemText">প্রশ্ন / নোট</label><textarea class="problem-input" id="problemText" placeholder="যে প্রশ্নটা পরে সমাধান করবে, এখানে লিখো…"></textarea></div>
+<div><label class="problem-label" for="problemImage">প্রশ্নের ছবি (ঐচ্ছিক)</label><input class="problem-file" id="problemImage" type="file" accept="image/*"><div class="problem-hint">ছবি ছোট করে সংরক্ষণ করা হবে।</div></div>
+<div class="problem-actions"><button class="btn" type="submit" id="problemSave">＋ প্রশ্ন সংরক্ষণ</button><span class="problem-hint" id="problemSaveHint">Local backup + cloud sync</span></div>
+</form>
+<div class="problem-list" id="problemList"></div>
+</div></section></div>
+
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
@@ -355,7 +374,7 @@ const subjects=[
 ['1','প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস',2],['2','প্রাণীর পরিচিতি',2],['3','পরিপাক ও শোষণ',2],['4','রক্ত ও সঞ্চালন',2],['5','শ্বাসক্রিয়া ও শ্বসন',2],['6','বর্জ্য ও নিষ্কাশন',2],['7','চলন ও অঙ্গচালনা',2],['8','সমন্বয় ও নিয়ন্ত্রণ',2],['9','মানব জীবনের ধারাবাহিকতা',2],['10','মানবদেহের প্রতিরক্ষা',2],['11','জিনতত্ত্ব ও বিবর্তন',2],['12','প্রাণীর আচরণ',2]]}
 ];
 const STEPS=[['পড়া','পড়া শেষ'],['R1','Revision 1'],['R2','Revision 2'],['R3','Revision 3']];
-const STORE='admissionOS_v1',TAB_STORE='admissionOS_tab';
+const STORE='admissionOS_v1',TAB_STORE='admissionOS_tab',PROBLEMS_STORE='admissionOS_problems_v1';
 const FIREBASE_CONFIG={
   apiKey:"AIzaSyBaGrEu0NChF5yyCDfcdFZoc2OladgBHUA",
   authDomain:"admission-da1d4.firebaseapp.com",
@@ -372,6 +391,9 @@ let progress={};
 try{progress=JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){progress={}}
 if(!progress||typeof progress!=='object'||Array.isArray(progress))progress={};
 let active=subjects[0].id,paper='all',sort='default';
+let problems={};try{problems=JSON.parse(localStorage.getItem(PROBLEMS_STORE)||'{}')}catch(e){problems={}}
+if(!problems||typeof problems!=='object'||Array.isArray(problems))problems={};
+let problemChapterKey=null,problemCloudTimers={};
 try{const t=localStorage.getItem(TAB_STORE);if(subjects.some(s=>s.id===t))active=t}catch(e){}
 const mq=window.matchMedia('(max-width:640px)');
 
@@ -403,7 +425,8 @@ function renderTabs(){
 
 function rowHTML(s,o){
   const a=o.a,n=cnt(a),p=n*25;
-  let h='<tr class="row'+(n===4?' done':'')+'" data-k="'+esc(key(s.id,o.ch))+'"><td class="g">'+esc(o.ch[0])+'</td><td class="n" style="--p:'+p+'">'+esc(o.ch[1])+'</td>';
+  const ck=key(s.id,o.ch),pc=(problems[ck]||[]).filter(x=>!x.solved).length;
+  let h='<tr class="row'+(n===4?' done':'')+'" data-k="'+esc(ck)+'"><td class="g">'+esc(o.ch[0])+'</td><td class="n" style="--p:'+p+'">'+esc(o.ch[1])+'<button type="button" class="problem-btn" data-problem-key="'+esc(ck)+'" title="এই অধ্যায়ের পরে করার প্রশ্ন">＋ Later '+(pc?'<span class="pcnt">'+pc+'</span>':'')+'</button></td>';
   STEPS.forEach((st,i)=>{
     h+='<td class="c'+(a[i]?' on':'')+'"><input type="checkbox" data-i="'+i+'" aria-label="'+esc(o.ch[1]+', '+st[1])+'"'+(a[i]?' checked':'')+'><span class="mk">'+CHECK+'</span><span class="ring"></span></td>';
   });
@@ -587,6 +610,25 @@ $('#importFile').addEventListener('change',e=>{
   r.readAsText(f);
 });
 
+
+/* Problems for Later: local-first, chapter-wise cloud sync */
+function saveProblemsLocal(){try{localStorage.setItem(PROBLEMS_STORE,JSON.stringify(problems));return true}catch(e){flash('Problem backup is full on this device','err');return false}}
+function problemCollection(u){return docRef(u).collection('chapters')}
+function queueProblemCloud(k){if(!user||!db)return;clearTimeout(problemCloudTimers[k]);setSync('busy','Saving problems…');problemCloudTimers[k]=setTimeout(async()=>{try{await problemCollection(user).doc(k).set({questions:problems[k]||[],updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});setSync('ok','Synced',user.email||'')}catch(e){cloudError(e)}},500)}
+function persistProblems(k){saveProblemsLocal();queueProblemCloud(k);renderRows();renderProblemList()}
+function chapterNameFromKey(k){for(const s of subjects)for(const ch of s.chapters)if(key(s.id,ch)===k)return s.bn+' · '+ch[0]+'. '+ch[1];return 'অধ্যায়'}
+function openProblems(k){problemChapterKey=k;$('#problemChapter').textContent=chapterNameFromKey(k);$('#problemBackdrop').hidden=false;document.body.style.overflow='hidden';$('#problemText').value='';$('#problemImage').value='';$('#problemSaveHint').textContent=user?'Cloud sync চালু':'Local backup — Google Login করলে cloud sync হবে';renderProblemList();setTimeout(()=>$('#problemText').focus(),50)}
+function closeProblems(){$('#problemBackdrop').hidden=true;document.body.style.overflow='';problemChapterKey=null}
+function renderProblemList(){const el=$('#problemList');if(!el)return;const arr=problemChapterKey?(problems[problemChapterKey]||[]):[];if(!arr.length){el.innerHTML='<div class="problem-empty">এখনো কোনো প্রশ্ন রাখা হয়নি। উপরে প্রশ্ন লিখে বা ছবি দিয়ে সংরক্ষণ করো।</div>';return}el.innerHTML=arr.map((p,i)=>'<article class="problem-item'+(p.solved?' solved':'')+'" data-problem-id="'+esc(p.id)+'"><div class="problem-item-top"><strong>প্রশ্ন '+(i+1)+'</strong><span class="state">'+(p.solved?'✓ Solved':'● Pending')+'</span></div>'+(p.text?'<div class="problem-text">'+esc(p.text)+'</div>':'')+(p.image?'<img class="problem-image" src="'+p.image+'" alt="সংরক্ষিত প্রশ্নের ছবি">':'')+'<div class="problem-item-actions"><button type="button" data-problem-action="toggle">'+(p.solved?'আবার Pending':'✓ Solved চিহ্নিত করো')+'</button><button type="button" data-problem-action="edit">Edit</button><button type="button" data-problem-action="delete">Delete</button></div></article>').join('')}
+function compressProblemImage(file){return new Promise((resolve,reject)=>{if(!file||!file.type.startsWith('image/')){resolve('');return}const reader=new FileReader();reader.onerror=()=>reject(new Error('ছবি পড়া যায়নি'));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('ছবিটি খোলা যায়নি'));img.onload=()=>{const scale=Math.min(1,1200/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',.68))};img.src=reader.result};reader.readAsDataURL(file)})}
+$('#rows').addEventListener('click',e=>{const b=e.target.closest('[data-problem-key]');if(b)openProblems(b.dataset.problemKey)});
+$('#problemClose').addEventListener('click',closeProblems);
+$('#problemBackdrop').addEventListener('click',e=>{if(e.target===$('#problemBackdrop'))closeProblems()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#problemBackdrop').hidden)closeProblems()});
+$('#problemForm').addEventListener('submit',async e=>{e.preventDefault();if(!problemChapterKey)return;const text=$('#problemText').value.trim(),file=$('#problemImage').files[0];if(!text&&!file){flash('প্রশ্ন লিখো অথবা ছবি যোগ করো','err');return}const btn=$('#problemSave');btn.disabled=true;btn.textContent='সংরক্ষণ হচ্ছে…';try{const image=await compressProblemImage(file),k=problemChapterKey,arr=problems[k]||(problems[k]=[]);arr.push({id:'p_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),text,image,solved:false,createdAt:Date.now()});$('#problemText').value='';$('#problemImage').value='';persistProblems(k);flash(user?'প্রশ্ন সংরক্ষিত · Syncing':'প্রশ্ন Local Backup-এ সংরক্ষিত','ok')}catch(err){flash(err.message||'প্রশ্ন সংরক্ষণ করা যায়নি','err')}finally{btn.disabled=false;btn.textContent='＋ প্রশ্ন সংরক্ষণ'}});
+$('#problemList').addEventListener('click',e=>{const b=e.target.closest('[data-problem-action]');if(!b||!problemChapterKey)return;const k=problemChapterKey,arr=problems[k]||[],card=b.closest('[data-problem-id]'),i=arr.findIndex(p=>p.id===card.dataset.problemId);if(i<0)return;const action=b.dataset.problemAction;if(action==='toggle'){arr[i].solved=!arr[i].solved;persistProblems(k)}else if(action==='delete'){if(!confirm('এই প্রশ্নটি মুছে ফেলবে?'))return;arr.splice(i,1);if(!arr.length)delete problems[k];persistProblems(k)}else if(action==='edit'){const next=prompt('প্রশ্ন / নোট সম্পাদনা করো:',arr[i].text||'');if(next===null)return;arr[i].text=next.trim();persistProblems(k)}});
+async function loadCloudProblems(u){try{const snap=await problemCollection(u).get(),found={};snap.forEach(d=>{const data=d.data();if(Array.isArray(data.questions))found[d.id]=data.questions});Object.keys(found).forEach(k=>{problems[k]=found[k]});saveProblemsLocal();Object.keys(problems).forEach(k=>{if(!Object.prototype.hasOwnProperty.call(found,k))queueProblemCloud(k)});renderRows();renderProblemList()}catch(e){cloudError(e)}}
+
 /* ---------- status + cloud sync ---------- */
 const sync={kind:'local',text:'Local',tip:''};
 let flashT=0,app=null,auth=null,db=null,user=null,loading=false,saveT=0;
@@ -667,6 +709,7 @@ function initCloud(){
       }
       saveLocal();
       renderRows();renderStats();
+      await loadCloudProblems(user);
       setSync('ok','Synced',user.email||'');
     }catch(e){cloudError(e)}
     finally{loading=false}
