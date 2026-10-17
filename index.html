@@ -13,10 +13,22 @@
 <header class="top"><div class="brand"><div class="logo">A</div><div><div class="eyebrow">PERSONAL STUDY SYSTEM</div><h1>AdmissionOS</h1><div class="sub">পড়া • অনুশীলন • ৩ বার Revision</div></div></div><a href="https://github.com/iammdtanvirrahman/admission" target="_blank" rel="noreferrer">GitHub ↗</a></header>
 <section class="hero"><div class="heroMain"><span class="pill">YOUR ADMISSION JOURNEY</span><h2>এক অধ্যায় করে এগিয়ে যাও।<br>প্রস্তুতি থাকুক হিসাবের মধ্যে।</h2><p>চারটি বিষয়, দুই পত্র, প্রতিটি অধ্যায়ের পড়া শেষ এবং তিনটি Revision—সব এক জায়গায় ট্র্যাক করো। তোমার অগ্রগতি এই ব্রাউজারেই সেভ হবে।</p></div><div class="heroSide"><div class="sub">সামগ্রিক অগ্রগতি</div><div class="bigNum" id="overallPct">0%</div><div class="progress"><span id="overallBar"></span></div><div class="sub" id="overallText">0 / 0টি ধাপ সম্পন্ন</div></div></section>
 <section class="stats"><div class="stat"><div class="n" id="chapterCount">0</div><div class="label">মোট অধ্যায়</div></div><div class="stat"><div class="n" id="studyDone">0</div><div class="label">পড়া শেষ</div></div><div class="stat"><div class="n" id="revisionDone">0</div><div class="label">Revision সম্পন্ন</div></div><div class="stat"><div class="n" id="fullDone">0</div><div class="label">সম্পূর্ণ অধ্যায়</div></div></section>
+<section class="subjectCard" style="padding:18px;margin-bottom:18px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0 0 4px;font-size:20px">☁️ সব ডিভাইসে Progress Sync</h2><div class="sub" id="cloudStatus">এখনও Cloud Sync সেটআপ করা হয়নি — আপাতত এই ব্রাউজারে সেভ হচ্ছে।</div></div><span class="pill" id="cloudBadge">LOCAL ONLY</span></div>
+<details style="margin-top:14px"><summary style="cursor:pointer;color:#b9c5ff">Firebase সেটআপ / লগইন</summary>
+<p class="sub">একবার Firebase Web App config যোগ করো, তারপর একই ইমেইল দিয়ে সব ডিভাইসে লগইন করলেই progress sync হবে।</p>
+<label class="sub" for="firebaseConfig" style="display:block;margin:10px 0 5px">Firebase Web App config (JSON)</label>
+<textarea id="firebaseConfig" rows="5" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","appId":"..."}' style="width:100%;background:#0b111b;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:13px/1.5 monospace"></textarea>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="connectFirebase">Config Save & Connect</button><button class="btn" id="disconnectFirebase">Cloud Config মুছুন</button></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:12px"><input id="cloudEmail" type="email" placeholder="ইমেইল" autocomplete="email" style="background:#0b111b;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px"><input id="cloudPassword" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password" style="background:#0b111b;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="createAccount">নতুন অ্যাকাউন্ট</button><button class="btn" id="signIn">লগইন</button><button class="btn" id="signOut">লগআউট</button></div>
+<div class="note">নিরাপত্তা: Firebase Console-এ Authentication → Email/Password চালু করো, Firestore Database তৈরি করো এবং নিচে দেওয়া secure rules বসাও। Config-এ private key থাকে না; ডেটা নিরাপদ রাখতে Firestore Rules জরুরি।</div>
+</details></section>
 <div class="toolbar"><input id="search" placeholder="অধ্যায় খুঁজুন…"><select id="paperFilter"><option value="all">সব পত্র</option><option value="1">১ম পত্র</option><option value="2">২য় পত্র</option></select><select id="statusFilter"><option value="all">সব অধ্যায়</option><option value="pending">অসম্পূর্ণ</option><option value="study">পড়া শেষ</option><option value="revision">Revision বাকি</option><option value="complete">সম্পূর্ণ</option></select><button class="btn" id="exportBtn">ডেটা Export</button><button class="btn" id="importBtn">Import</button><input type="file" id="importFile" accept="application/json" hidden></div>
 <div class="layout"><nav class="sidebar" id="subjects"></nav><section><div class="contentHead"><div><h2 id="listTitle">Physics</h2><div class="sub" id="listSub">অধ্যায়ের অগ্রগতি</div></div><select id="sortFilter"><option value="default">বইয়ের ক্রম</option><option value="pending">অসম্পূর্ণ আগে</option><option value="complete">সম্পূর্ণ আগে</option></select></div><div class="chapterList" id="chapterList"></div><div class="note">নোট: বোর্ড/বইয়ের সংস্করণভেদে অধ্যায়ের নাম বা বিন্যাসে সামান্য পার্থক্য হতে পারে। তোমার নির্দিষ্ট ভর্তি পরীক্ষার সিলেবাস অনুযায়ী তালিকা যাচাই করে নিও।</div></section></div>
-<div class="foot">AdmissionOS • Progress এই ব্রাউজারের Local Storage-এ সেভ হয়। ব্রাউজার ডেটা মুছে ফেললে অগ্রগতি হারাতে পারে—মাঝে মাঝে Export করে ব্যাকআপ রাখো।</div>
+<div class="foot">AdmissionOS • লগইন না করা পর্যন্ত progress শুধু এই ব্রাউজারে থাকে। Cloud Sync চালু হলে একই account দিয়ে অন্য ডিভাইসে লগইন করো।</div>
 </main>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script>
 const subjects=[
 {id:'physics',name:'Physics',bn:'পদার্থবিজ্ঞান',icon:'⚛️',chapters:[
@@ -34,11 +46,57 @@ const subjects=[
 ];
 const steps=['পড়া শেষ','Revision 1','Revision 2','Revision 3'];
 const STORE='admissionOS_v1';
+const FIREBASE_STORE='admissionOS_firebase_config_v1';
+let cloudApp=null,cloudAuth=null,cloudDb=null,cloudUser=null,cloudReady=false,cloudWriteTimer=null,cloudLoading=false;
+function cloudStatus(message,badge){document.querySelector('#cloudStatus').textContent=message;document.querySelector('#cloudBadge').textContent=badge}
+function setCloudControls(){const ok=!!cloudAuth;document.querySelector('#signIn').disabled=!ok;document.querySelector('#createAccount').disabled=!ok;document.querySelector('#signOut').disabled=!cloudUser}
+function cloudError(e){cloudStatus('Cloud error: '+(e&&e.message?e.message:'অজানা সমস্যা'),'ERROR')}
+function connectFirebaseConfig(raw){
+ try{
+  const cfg=typeof raw==='string'?JSON.parse(raw):raw;
+  if(!cfg.apiKey||!cfg.authDomain||!cfg.projectId||!cfg.appId)throw new Error('apiKey, authDomain, projectId ও appId প্রয়োজন।');
+  if(!window.firebase)throw new Error('Firebase SDK লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করো।');
+  if(cloudApp){try{cloudApp.delete()}catch(e){}}
+  cloudApp=firebase.initializeApp(cfg,'AdmissionOS');
+  cloudAuth=cloudApp.auth();cloudDb=cloudApp.firestore();cloudReady=true;
+  localStorage.setItem(FIREBASE_STORE,JSON.stringify(cfg));
+  document.querySelector('#firebaseConfig').value=JSON.stringify(cfg,null,2);
+  cloudAuth.onAuthStateChanged(async user=>{
+   cloudUser=user||null;setCloudControls();
+   if(!user){cloudStatus('Firebase সংযুক্ত। সব ডিভাইসে sync করতে একই account দিয়ে লগইন করো।','SIGNED OUT');return}
+   cloudLoading=true;cloudStatus('Cloud থেকে progress আনা হচ্ছে…','SYNCING');
+   try{
+    const ref=cloudDb.collection('users').doc(user.uid).collection('data').doc('progress');
+    const snap=await ref.get();
+    if(snap.exists&&snap.data().progress&&Object.keys(snap.data().progress).length){
+      const remote=snap.data().progress;
+      progress={...progress,...remote};
+    }else{
+      await ref.set({progress:progress,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+    }
+    saveLocalOnly();renderAll();cloudStatus('লগইন: '+user.email+' • Cloud sync চালু','SYNC ON');
+   }catch(e){cloudError(e);if(e.code==='permission-denied')cloudStatus('Firestore Rules ঠিক করা নেই। নিচের secure rules বসাও।','RULES NEEDED')}
+   finally{cloudLoading=false}
+  });
+  cloudStatus('Firebase সংযুক্ত হচ্ছে…','CONNECTING');setCloudControls();
+ }catch(e){cloudError(e);alert('Firebase config error: '+e.message)}
+}
+function saveLocalOnly(){try{localStorage.setItem(STORE,JSON.stringify(progress))}catch(e){}}
+function queueCloudSave(){
+ if(!cloudUser||!cloudDb||cloudLoading)return;
+ clearTimeout(cloudWriteTimer);
+ cloudWriteTimer=setTimeout(async()=>{
+  try{
+   await cloudDb.collection('users').doc(cloudUser.uid).collection('data').doc('progress').set({progress:progress,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+   cloudStatus('সর্বশেষ progress Cloud-এ সেভ হয়েছে • '+cloudUser.email,'SYNC ON');
+  }catch(e){cloudError(e)}
+ },600);
+}
 let progress={};try{progress=JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){progress={}}
 let active='physics';
 const key=(s,c)=>s+'-'+c[2]+'-'+c[0]+'-'+c[1];
 const get=(s,c)=>progress[key(s,c)]||[false,false,false,false];
-const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(progress))}catch(e){alert('এই ব্রাউজারে ডেটা সেভ করা যাচ্ছে না। Export করে ব্যাকআপ রাখো।')}};
+const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(progress))}catch(e){alert('এই ব্রাউজারে ডেটা সেভ করা যাচ্ছে না। Export করে ব্যাকআপ রাখো.')}queueCloudSave()};
 const total=()=>subjects.reduce((a,s)=>a+s.chapters.length*4,0);
 const counts=s=>{let done=0,study=0,rev=0,full=0;s.chapters.forEach(c=>{let a=get(s.id,c);done+=a.filter(Boolean).length;if(a[0])study++;rev+=a.slice(1).filter(Boolean).length;if(a.every(Boolean))full++});return{done,study,rev,full,chapters:s.chapters.length}};
 function renderStats(){let all=subjects.reduce((a,s)=>{let c=counts(s);Object.keys(c).forEach(k=>a[k]=(a[k]||0)+c[k]);return a},{done:0,study:0,rev:0,full:0,chapters:0});let pct=total()?Math.round(all.done/total()*100):0;document.querySelector('#overallPct').textContent=pct+'%';document.querySelector('#overallBar').style.width=pct+'%';document.querySelector('#overallText').textContent=all.done+' / '+total()+'টি ধাপ সম্পন্ন';document.querySelector('#chapterCount').textContent=all.chapters;document.querySelector('#studyDone').textContent=all.study;document.querySelector('#revisionDone').textContent=all.rev;document.querySelector('#fullDone').textContent=all.full;document.querySelectorAll('.subjectBtn').forEach(b=>{let s=subjects.find(x=>x.id===b.dataset.id),c=counts(s);b.querySelector('.count').textContent+c.full; b.querySelector('.count').textContent=c.full+'/'+c.chapters})}
@@ -48,5 +106,11 @@ function renderList(){const s=subjects.find(x=>x.id===active);document.querySele
 document.querySelector('#exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({version:1,progress},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='admission-progress-backup.json';a.click();URL.revokeObjectURL(url)};
 document.querySelector('#importBtn').onclick=()=>document.querySelector('#importFile').click();
 document.querySelector('#importFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result);if(!data.progress||typeof data.progress!=='object')throw Error();progress=data.progress;save();renderAll();alert('Progress সফলভাবে Import হয়েছে।')}catch(err){alert('ফাইলটি সঠিক ব্যাকআপ JSON নয়।')}e.target.value=''};r.readAsText(f)};
+document.querySelector('#connectFirebase').onclick=()=>connectFirebaseConfig(document.querySelector('#firebaseConfig').value);
+document.querySelector('#disconnectFirebase').onclick=()=>{localStorage.removeItem(FIREBASE_STORE);alert('এই ব্রাউজার থেকে Firebase config মুছে গেছে। Firebase Console-এর সেটিংস বদলায়নি।');location.reload()};
+document.querySelector('#createAccount').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');const email=document.querySelector('#cloudEmail').value.trim(),password=document.querySelector('#cloudPassword').value;if(!email||password.length<6)throw new Error('সঠিক ইমেইল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দাও।');await cloudAuth.createUserWithEmailAndPassword(email,password)}catch(e){alert(e.message)}};
+document.querySelector('#signIn').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');await cloudAuth.signInWithEmailAndPassword(document.querySelector('#cloudEmail').value.trim(),document.querySelector('#cloudPassword').value)}catch(e){alert(e.message)}};
+document.querySelector('#signOut').onclick=async()=>{try{if(cloudAuth)await cloudAuth.signOut()}catch(e){cloudError(e)}};
 function renderAll(){renderStats();renderSubjects();renderList()}renderAll();
+try{const cfg=localStorage.getItem(FIREBASE_STORE);if(cfg){document.querySelector('#firebaseConfig').value=JSON.stringify(JSON.parse(cfg),null,2);connectFirebaseConfig(cfg)}}catch(e){}
 </script></body></html>
