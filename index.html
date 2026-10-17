@@ -1158,37 +1158,109 @@ function routineDayLabel(date){
  const d=new Date(date+"T12:00:00");
  return d.toLocaleDateString("en-GB",{weekday:"short",day:"2-digit",month:"short",year:"numeric"});
 }
+const ROUTINE_MONTHLY_TESTS = [
+ {id:"monthly-01",title:"Engineering Monthly Revision Test-01",start:"2026-09-20",end:"2026-09-21",first:1,last:4},
+ {id:"monthly-02",title:"Engineering Monthly Revision Test-02",start:"2026-10-22",end:"2026-10-23",first:5,last:8},
+ {id:"monthly-03",title:"Engineering Monthly Revision Test-03",start:"2026-11-15",end:"2026-11-17",first:9,last:13}
+];
+function routineDaysBetween(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/86400000)}
+function routineLectureGroup(test,n){
+ const pad=String(n).padStart(2,"0");
+ return ["P"+pad,"C"+pad,"M"+pad];
+}
+function routineMonthlyRevision(date){
+ const test=ROUTINE_MONTHLY_TESTS.find(t=>t.end>=date);
+ if(!test)return {title:"Cumulative recall · completed routine",detail:"শেষ করা lecture P/C/M-এর formula, reaction, method ও ভুল MCQ recall করো; পরের syllabus-এর আগে error log পরিষ্কার করো.",mcq:20};
+ const count=test.last-test.first+1;
+ const focusStart=datePlus(test.start,-count);
+ let slot;
+ if(date>=test.start)slot=test.last;
+ else if(date>=focusStart)slot=test.first+Math.min(count-1,Math.max(0,routineDaysBetween(focusStart,date)));
+ else slot=test.first+(Math.abs(routineDaysBetween(date,focusStart))%count);
+ const codes=routineLectureGroup(test,slot);
+ const topics=codes.map(c=>c+" — "+routineCodeTopic(c));
+ const due=revisionReminders.filter(r=>!r.done&&r.due<=date).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,4);
+ let detail;
+ if(date>=test.start&&date<=test.end){
+   detail=test.title+" is active ("+test.start+" to "+test.end+"). Follow the official test slot; after attempting it, analyse the mistakes and re-solve the incorrect written/MCQ items. Recall target: "+topics.join("; ")+".";
+ }else{
+   detail="Upcoming "+test.title+" · "+test.start+" to "+test.end+" · official syllabus: PCM lectures "+String(test.first).padStart(2,"0")+"–"+String(test.last).padStart(2,"0")+". Today revise: "+topics.join("; ")+". Recall formulae/reactions without notes, do 10 mixed MCQs per subject and mark weak points.";
+ }
+ detail+=(due.length?" Spaced revision due: "+due.map(r=>r.name).join("; ")+".":" Also review 5 older wrong answers from the error log.");
+ return {title:"Revision + Monthly Cumulative Recall · "+test.title,detail,mcq:30};
+}
 function routineTaskForDate(date){
  const events=routineEntriesFor(date),tasks=[];
+ const holiday=events.some(x=>x.kind==="Notice"&&/holiday/i.test(x.title))||ROUTINE_SPECIAL.some(x=>x.start<=date&&x.end>=date&&/holiday/i.test(x.title));
  const live=(ROUTINE_LIVE_CLASSES[date]||[]).filter(s=>/(?:BIO|P|C|M|E)0?\d+/i.test(s));
- live.forEach(s=>{
+ // Every lecture on the PDF becomes its own chapter/reading task.
+ live.forEach((s,i)=>{
    const codes=(s.match(/(?:BIO|P|C|M|E)0?\d+/gi)||[]).map(routineCodeLabel);
-   const code=codes[0],sub=routineSubject(code);
-   if(!code)return;
+   const code=codes[0];if(!code)return;
    const topical=codes.map(c=>c+" — "+routineCodeTopic(c)).join("; ");
-   const isBio=codes.some(c=>c.startsWith("BIO"));
-   const isMulti=codes.length>1;
-   tasks.push({id:"routine_read_"+date+"_"+code+"_"+tasks.length,routineGenerated:true,category:"Reading",subject:sub,name:"Read & annotate: "+topical,detail:"Lecture-linked reading: make a 1-page concept/formula summary and mark 3 uncertain points.",mcqTarget:0,mcqDone:0,revision:false,done:false,routineDate:date});
-   tasks.push({id:"routine_quiz_"+date+"_"+code+"_"+tasks.length,routineGenerated:true,category:"Daily quiz",subject:sub,name:"Timed quiz: "+codes.join(" + "),detail:isBio?"Attempt 30 MCQ + 2 short written questions (5 marks total).":"Attempt "+(isMulti?15*codes.length:15)+" MCQ + written practice for each scheduled part; review every wrong answer.",mcqTarget:isBio?30:15*codes.length,mcqDone:0,revision:true,done:false,routineDate:date});
+   const isMulti=/parts?\s*0?1\s*(?:\+|&|and|–|-)\s*0?2/i.test(s)||/parts?\s*1[–-]2/i.test(s);
+   tasks.push({
+     id:"routine_chapter_live_"+date+"_"+code+"_"+i,
+     routineGenerated:true,category:"Chapter reading",subject:routineSubject(code),
+     name:"Read / finish lecture: "+s+" — "+topical,
+     detail:"Complete the matching Udvash marathon lecture/notes. Write a short concept or formula sheet, then solve 5 representative problems. Scheduled class: EV 3:00 PM / BV 7:30 PM; combined syllabus labels should be checked against the original routine.",
+     mcqTarget:5,mcqDone:0,revision:false,done:false,routineDate:date
+   });
  });
+ // Offline class is a separate source item; it becomes one separate chapter task too.
  const offline=ROUTINE_OFFLINE_CLASS[date];
  if(offline&&!/Orientation/.test(offline)){
-   const c=routineCodeLabel(offline);
-   tasks.push({id:"routine_offline_"+date+"_"+c,routineGenerated:true,category:"Offline class",subject:routineSubject(c),name:"Prepare / consolidate: "+c,detail:routineCodeTopic(c)+" · Before class: preview headings; after class: rewrite the key method/formula and solve 5 examples.",mcqTarget:10,mcqDone:0,revision:false,done:false,routineDate:date});
+   const code=routineCodeLabel(offline);
+   tasks.push({
+     id:"routine_chapter_offline_"+date+"_"+code,
+     routineGenerated:true,category:"Offline class",subject:routineSubject(code),
+     name:"Chapter task · Offline class "+code+" — "+routineCodeTopic(code),
+     detail:"Before class preview headings and examples; after class write the key idea/formula from memory and solve 5 examples. Source timing: Self Batch Time.",
+     mcqTarget:5,mcqDone:0,revision:false,done:false,routineDate:date
+   });
  }
- const oe=ROUTINE_OFFLINE_EXAM[date];
- if(oe){
-   tasks.push({id:"routine_exam_"+date,routineGenerated:true,category:"Offline exam",subject:oe.code?routineSubject(oe.code):"Mixed",name:"Attempt: "+oe.title,detail:(oe.code?routineCodeTopic(oe.code)+" · ":"")+oe.detail+"; mark wrong answers in Problems for Later.",mcqTarget:oe.mcq||0,mcqDone:0,revision:true,done:false,routineDate:date});
+ // Exactly one exam task per date: collect all official exams and daily quizzes together.
+ if(!holiday){
+   const examEntries=events.filter(x=>["Live exam","Offline exam","Upcoming/active exam"].includes(x.kind)&&!/holiday/i.test(x.title));
+   const examDetail=examEntries.map(x=>x.kind+": "+x.title+" — "+x.detail).join("\n");
+   let dailyMcq=0;
+   examEntries.forEach(x=>{
+     const detail=x.detail||"";
+     const match=detail.match(/MCQ\s*\((\d+)\)/i);
+     if(match&&x.kind!=="Upcoming/active exam")dailyMcq+=Number(match[1])||0;
+     const offTitle=x.title||"";
+     if(x.kind==="Offline exam"&&/MCQ\s*\(20\)/i.test(detail))dailyMcq+=0; // already counted from detail above
+   });
+   const practiceOnly=!examEntries.length;
+   tasks.push({
+     id:"routine_daily_exam_"+date,routineGenerated:true,category:"Daily exam",
+     subject:"Mixed",
+     name:practiceOnly?"Daily self-test · Mixed practice":"Daily Exam Block · "+examEntries.length+" scheduled exam item"+(examEntries.length===1?"":"s"),
+     detail:practiceOnly
+       ?"No formal exam is listed for this date in the PDFs. Do one self-test: 30 timed MCQs from current/recent P/C/M/Biology lessons, then check every answer."
+       :examDetail+"\nAttempt each listed exam in its official window. For daily lecture quizzes use the PDF's stated MCQ/written format; weekly/monthly exams keep their full official syllabus and duration. Afterward, log wrong answers in Problems for Later.",
+     mcqTarget:practiceOnly?30:dailyMcq,mcqDone:0,revision:false,done:false,routineDate:date
+   });
  }
- const todayExams=ROUTINE_SPECIAL.filter(x=>x.start<=date&&x.end>=date&&!/holiday/i.test(x.title));
- todayExams.forEach((x,i)=>{
-   const isMonthly=/Monthly Revision Test/.test(x.title), isEngineering=/Engineering/.test(x.title);
-   tasks.push({id:"routine_special_"+date+"_"+i,routineGenerated:true,category:"Exam",subject:"Mixed",name:"Exam focus: "+x.title,detail:x.detail+" · Use a timed mock, then spend at least 20 minutes analysing errors.",mcqTarget:isMonthly?0:20,mcqDone:0,revision:true,done:false,routineDate:date});
- });
- if(!tasks.length)tasks.push({id:"routine_review_"+date,routineGenerated:true,category:"Revision",subject:"Mixed",name:"Active recall + mixed practice",detail:"Revise one current P/C/M/Bio module, solve 30 mixed MCQs and write down mistakes.",mcqTarget:30,mcqDone:0,revision:true,done:false,routineDate:date});
- tasks.push({id:"routine_errorlog_"+date,routineGenerated:true,category:"Review",subject:"Mixed",name:"Error-log review",detail:"Review yesterday's wrong MCQ/written answers; re-solve at least 5 without looking at solutions.",mcqTarget:5,mcqDone:0,revision:true,done:false,routineDate:date});
- const backOffset=Math.floor((new Date(date+"T12:00:00")-new Date("2026-10-18T12:00:00"))/86400000);const back=ROUTINE_BACKLOG[((backOffset%ROUTINE_BACKLOG.length)+ROUTINE_BACKLOG.length)%ROUTINE_BACKLOG.length];
- tasks.push({id:"routine_backlog_"+date+"_"+back.code,routineGenerated:true,category:"Catch-up",subject:routineSubject(back.code),name:"Backlog sprint: "+back.code+" — "+routineCodeTopic(back.code),detail:back.detail+" · 35–45 min focused slot, then mark one unresolved item for tomorrow.",mcqTarget:back.mcq,mcqDone:0,revision:true,done:false,routineDate:date});
+ // One combined spaced-revision + monthly callback/cumulative task per day.
+ if(holiday){
+   tasks.push({
+     id:"routine_revision_holiday_"+date,routineGenerated:true,category:"Revision",
+     subject:"Mixed",name:"Light revision / rest day",
+     detail:"PDF notes that classes and exams are closed for Durga Puja. Keep the day light: optional 15-minute flashcard recall, or rest and resume the plan tomorrow.",
+     mcqTarget:0,mcqDone:0,revision:true,done:false,routineDate:date
+   });
+ }else{
+   const monthly=routineMonthlyRevision(date);
+   const backOffset=Math.floor((new Date(date+"T12:00:00")-new Date("2026-10-18T12:00:00"))/86400000);
+   const back=ROUTINE_BACKLOG[((backOffset%ROUTINE_BACKLOG.length)+ROUTINE_BACKLOG.length)%ROUTINE_BACKLOG.length];
+   tasks.push({
+     id:"routine_revision_monthly_"+date,routineGenerated:true,category:"Revision + monthly cumulative",
+     subject:"Mixed",name:monthly.title,
+     detail:monthly.detail+" Catch-up sprint (35–45 min): "+back.code+" — "+routineCodeTopic(back.code)+". "+back.detail,
+     mcqTarget:monthly.mcq+back.mcq,mcqDone:0,revision:true,done:false,routineDate:date
+   });
+ }
  return tasks;
 }
 function routineDateValue(){return $("#routineDate").value||localDate()}
