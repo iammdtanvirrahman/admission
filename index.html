@@ -1009,7 +1009,7 @@ const ROUTINE_LIVE_CLASSES = {
  "2026-09-06":["BIO03 parts 1–2 / Architecture-03"],"2026-09-07":["M03 part 1"],"2026-09-08":["M03 part 2"],
  "2026-09-09":["P04 part 1","P04 part 2"],"2026-09-11":["C04 part 1"],"2026-09-12":["C04 part 2"],
  "2026-09-13":["BIO04 parts 1–2 / Architecture-04"],"2026-09-14":["M04 part 1"],"2026-09-15":["M04 part 2"],
- "2026-09-16":["P05 part 1","P05 part 2"],"2026-09-18":["C05 part 1"],"2026-09-19":["C05 part 2","BIO05 parts 1–2 / Architecture-05"],
+ "2026-09-16":["P05 part 1","P05 part 2"],"2026-09-18":["C05 part 1"],"2026-09-19":["C05 part 2"],"2026-09-20":["BIO05 parts 1–2 / Architecture-05"],
  "2026-09-21":["M05 part 1"],"2026-09-22":["M05 part 2"],"2026-09-23":["P06 part 1","P06 part 2"],
  "2026-09-25":["C06 part 1"],"2026-09-26":["C06 part 2"],"2026-09-27":["BIO06 parts 1–2 / Architecture-06"],
  "2026-09-28":["M06 part 1"],"2026-09-29":["M06 part 2"],"2026-09-30":["P07 part 1","P07 part 2"],
@@ -1023,7 +1023,7 @@ const ROUTINE_LIVE_CLASSES = {
  "2026-10-26":["M10 part 1"],"2026-10-27":["M10 part 2"],"2026-10-28":["P10 part 1"],
  "2026-10-29":["P10 part 2","C11 part 1"],"2026-10-31":["C11 part 2","E01 parts 1–2 / Architecture-11"],
  "2026-11-02":["M11 part 1"],"2026-11-03":["M11 part 2"],"2026-11-04":["P11 part 1"],
- "2026-11-05":["P11 part 2","E02 parts 1–2 / Architecture-12"],"2026-11-07":["M12 part 1","M12 part 2"],
+ "2026-11-05":["P11 part 2"],"2026-11-06":["E02 parts 1–2 / Architecture-12"],"2026-11-07":["M12 part 1","M12 part 2"],
  "2026-11-09":["P12 part 1"],"2026-11-10":["P12 part 2"],"2026-11-11":["E03 parts 1–2 / Architecture-13","M13 part 1"],
  "2026-11-13":["M13 part 2"],"2026-11-14":["E04 parts 1–2 / Architecture-14"]
 };
@@ -1188,7 +1188,7 @@ function routineTaskForDate(date){
  });
  if(!tasks.length)tasks.push({id:"routine_review_"+date,routineGenerated:true,category:"Revision",subject:"Mixed",name:"Active recall + mixed practice",detail:"Revise one current P/C/M/Bio module, solve 30 mixed MCQs and write down mistakes.",mcqTarget:30,mcqDone:0,revision:true,done:false,routineDate:date});
  tasks.push({id:"routine_errorlog_"+date,routineGenerated:true,category:"Review",subject:"Mixed",name:"Error-log review",detail:"Review yesterday's wrong MCQ/written answers; re-solve at least 5 without looking at solutions.",mcqTarget:5,mcqDone:0,revision:true,done:false,routineDate:date});
- const back=ROUTINE_BACKLOG[(Math.floor((new Date(date+"T12:00:00")-new Date("2026-10-18T12:00:00"))/86400000)+ROUTINE_BACKLOG.length)%ROUTINE_BACKLOG.length];
+ const backOffset=Math.floor((new Date(date+"T12:00:00")-new Date("2026-10-18T12:00:00"))/86400000);const back=ROUTINE_BACKLOG[((backOffset%ROUTINE_BACKLOG.length)+ROUTINE_BACKLOG.length)%ROUTINE_BACKLOG.length];
  tasks.push({id:"routine_backlog_"+date+"_"+back.code,routineGenerated:true,category:"Catch-up",subject:routineSubject(back.code),name:"Backlog sprint: "+back.code+" — "+routineCodeTopic(back.code),detail:back.detail+" · 35–45 min focused slot, then mark one unresolved item for tomorrow.",mcqTarget:back.mcq,mcqDone:0,revision:true,done:false,routineDate:date});
  return tasks;
 }
@@ -1256,7 +1256,7 @@ function renderPlanner(){
   const list=planItems(),done=list.filter(x=>x.done).length,target=list.reduce((n,x)=>n+(Number(x.mcqTarget)||0),0),doneMcq=list.reduce((n,x)=>n+(Number(x.mcqDone)||0),0);
   $('#planSummary').innerHTML='<div class="hub-stat"><span>Tasks complete</span><strong>'+done+'/'+list.length+'</strong></div><div class="hub-stat"><span>MCQ progress</span><strong>'+doneMcq+'/'+target+'</strong></div><div class="hub-stat"><span>Revisions planned</span><strong>'+list.filter(x=>x.revision).length+'</strong></div>';
   if(!list.length){$('#planList').innerHTML='<div class="hub-empty">এই দিনের কোনো পরিকল্পনা নেই। উপরে অধ্যায় বেছে Daily Plan-এ যোগ করো।</div>';return}
-  $('#planList').innerHTML=list.map((x,i)=>'<article class="hub-task'+(x.done?' done':'')+'" data-plan-id="'+esc(x.id)+'"><input type="checkbox" data-plan-action="done" '+(x.done?'checked':'')+' aria-label="Task complete"><div><h4>'+esc(x.name)+'</h4><p>'+esc(x.subject)+' · '+(x.revision?'Revision included · ':'')+'MCQ target '+Number(x.mcqTarget||0)+'</p></div><div class="hub-task-actions"><label class="problem-hint">MCQ done <input type="number" min="0" max="5000" value="'+Number(x.mcqDone||0)+'" data-plan-action="mcq"></label><button type="button" data-plan-action="revision">'+(x.revision?'✓ Revision planned':'＋ Revision')+'</button><button type="button" data-plan-action="delete">Delete</button></div></article>').join('');
+  $('#planList').innerHTML=list.map((x,i)=>'<article class="hub-task'+(x.done?' done':'')+'" data-plan-id="'+esc(x.id)+'"><input type="checkbox" data-plan-action="done" '+(x.done?'checked':'')+' aria-label="Task complete"><div><h4>'+esc(x.name)+'</h4><p>'+esc(x.subject)+' · '+(x.revision?'Revision included · ':'')+(x.category?esc(x.category)+' · ':'')+'MCQ target '+Number(x.mcqTarget||0)+'</p>'+(x.detail?'<p>'+esc(x.detail)+'</p>':'')+'</div><div class="hub-task-actions"><label class="problem-hint">MCQ done <input type="number" min="0" max="5000" value="'+Number(x.mcqDone||0)+'" data-plan-action="mcq"></label><button type="button" data-plan-action="revision">'+(x.revision?'✓ Revision planned':'＋ Revision')+'</button><button type="button" data-plan-action="delete">Delete</button></div></article>').join('');
 }
 function updateRevisionBadge(){const today=localDate(),n=revisionReminders.filter(r=>!r.done&&r.due<=today).length;$('#revisionDueBadge').textContent=n?'· '+n:''}
 function notifyDueRevisions(){
