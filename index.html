@@ -695,7 +695,7 @@ async function getProblemImageURL(id){
 }
 function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.readAsDataURL(blob)})}
 async function hydrateProblemImages(){
-  $('#problemList img[data-image-key]').forEach(async img=>{try{const src=await getProblemImageURL(img.dataset.imageKey);if(src){img.src=src;img.removeAttribute('data-image-key')}else{img.hidden=true;const note=document.createElement('div');note.className='problem-hint';note.textContent='ছবিটি এই ডিভাইসে নেই। মূল ডিভাইস থেকে backup import করো।';img.after(note)}}catch(e){img.hidden=true}});
+  $$('#problemList img[data-image-key]').forEach(async img=>{try{const src=await getProblemImageURL(img.dataset.imageKey);if(src){img.src=src;img.removeAttribute('data-image-key')}else{img.hidden=true;const note=document.createElement('div');note.className='problem-hint';note.textContent='ছবিটি এই ডিভাইসে নেই। মূল ডিভাইস থেকে backup import করো।';img.after(note)}}catch(e){img.hidden=true}});
 }
 async function migrateProblemImages(){
   let changed=false;const changedKeys=[];
@@ -976,14 +976,14 @@ function renderFocusStats(){
   if(streak===0&&(Number(focusData.days[today])||0)<60){const y=new Date();y.setDate(y.getDate()-1);if((Number(focusData.days[localDate(y)])||0)>=60){let prev=0;for(let i=1;i<366;i++){const x=new Date();x.setDate(x.getDate()-i);if((Number(focusData.days[localDate(x)])||0)<60)break;prev++}streak=prev}}
   $('#focusStreak').textContent=streak+' days';
   $('#focusState').textContent=focusData.runningSince?'Session in progress':focusElapsed()?'Paused · '+Math.floor(focusElapsed()/60)+' min focused':'Ready when you are';
-  $('[data-focus-min]').forEach(b=>b.classList.toggle('on',Number(b.dataset.focusMin)===Number(focusData.sessionMinutes)));
+  $$('[data-focus-min]').forEach(b=>b.classList.toggle('on',Number(b.dataset.focusMin)===Number(focusData.sessionMinutes)));
 }
 let focusTick=null,lastFocusTick=0;
 function beginFocusTick(){if(focusTick)clearInterval(focusTick);lastFocusTick=Date.now();focusTick=setInterval(()=>{const now=Date.now();if(focusData.runningSince){const delta=(now-lastFocusTick)/1000;focusLogSeconds(delta);if(focusRemaining()<=0){focusData.elapsed=Number(focusData.sessionMinutes)*60;focusData.runningSince=0;persistFocus();clearInterval(focusTick);focusTick=null;flash('Focus session complete!','ok')}persistFocus()}lastFocusTick=now;renderFocusStats()},1000)}
 function stopFocus(){if(focusData.runningSince){const now=Date.now(),delta=Math.max(0,(now-(lastFocusTick||focusData.runningSince))/1000);focusLogSeconds(delta);focusData.elapsed=focusElapsed();focusData.runningSince=0;persistFocus()}if(focusTick){clearInterval(focusTick);focusTick=null}renderFocusStats()}
 function showHubTab(tab){
-  $('#hubTabs button').forEach(b=>b.classList.toggle('on',b.dataset.hubTab===tab));
-  $('.hub-panel').forEach(p=>p.hidden=p.id!=='hubPanel-'+tab);
+  $$('#hubTabs button').forEach(b=>b.classList.toggle('on',b.dataset.hubTab===tab));
+  $$('.hub-panel').forEach(p=>p.hidden=p.id!=='hubPanel-'+tab);
   if(tab==='planner')renderPlanner();if(tab==='revision'){renderRevisionList();notifyDueRevisions()}if(tab==='analytics')renderAnalytics();if(tab==='focus')renderFocusStats();if(tab==='backup')refreshOfflineStatus();
 }
 function refreshOfflineStatus(){
@@ -1030,7 +1030,7 @@ $('#weakChapters').addEventListener('click',e=>{const b=e.target.closest('[data-
 $('#focusStart').addEventListener('click',()=>{if(focusRemaining()<=0)focusData.elapsed=0;focusData.runningSince=Date.now();persistFocus();beginFocusTick();renderFocusStats()});
 $('#focusPause').addEventListener('click',stopFocus);
 $('#focusReset').addEventListener('click',()=>{stopFocus();focusData.elapsed=0;focusData.runningSince=0;persistFocus();renderFocusStats()});
-$('[data-focus-min]').forEach(b=>b.addEventListener('click',()=>{if(focusData.runningSince)return;focusData.sessionMinutes=Number(b.dataset.focusMin);focusData.elapsed=0;persistFocus();renderFocusStats()}));
+$$('[data-focus-min]').forEach(b=>b.addEventListener('click',()=>{if(focusData.runningSince)return;focusData.sessionMinutes=Number(b.dataset.focusMin);focusData.elapsed=0;persistFocus();renderFocusStats()}));
 $('#fullExportBtn').addEventListener('click',fullExport);
 $('#fullImportBtn').addEventListener('click',()=>$('#fullImportFile').click());
 $('#fullImportFile').addEventListener('change',e=>{const f=e.target.files[0];if(f)fullImportFile(f);e.target.value=''});
