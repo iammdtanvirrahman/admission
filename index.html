@@ -120,7 +120,33 @@ document.querySelector('#importBtn').onclick=()=>document.querySelector('#import
 document.querySelector('#importFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result);if(!data.progress||typeof data.progress!=='object')throw Error();progress=data.progress;save();renderAll();alert('Progress সফলভাবে Import হয়েছে।')}catch(err){alert('ফাইলটি সঠিক ব্যাকআপ JSON নয়।')}e.target.value=''};r.readAsText(f)};
 document.querySelector('#connectFirebase').onclick=()=>connectFirebaseConfig(document.querySelector('#firebaseConfig').value);
 document.querySelector('#disconnectFirebase').onclick=()=>{localStorage.removeItem(FIREBASE_STORE);alert('এই ব্রাউজার থেকে Firebase config মুছে গেছে। Firebase Console-এর সেটিংস বদলায়নি।');location.reload()};
-document.querySelector('#googleSignIn').onclick=async()=>{try{if(!cloudAuth)throw new Error('Firebase config connect হয়নি।');const provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});await cloudAuth.signInWithPopup(provider)}catch(e){if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){try{await cloudAuth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())}catch(x){cloudError(x)}}else{cloudError(e);alert('Google Login error: '+e.message)}}};
+document.querySelector('#googleSignIn').onclick=async()=>{
+ const btn=document.querySelector('#googleSignIn'),hint=document.querySelector('#authHint');
+ try{
+  if(!cloudAuth)throw new Error('Firebase config connect হয়নি। পেজটি refresh করো।');
+  btn.disabled=true;hint.textContent='Google Login খোলা হচ্ছে…';
+  const provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  // Mobile browsers are more reliable with redirect than popup.
+  if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+   await cloudAuth.signInWithRedirect(provider);return;
+  }
+  await cloudAuth.signInWithPopup(provider);
+ }catch(e){
+  const code=e&&e.code?e.code:'unknown';
+  // Popup failures often occur on a second device/browser; retry through full-page redirect.
+  if(['auth/popup-blocked','auth/cancelled-popup-request','auth/popup-closed-by-user'].includes(code)){
+   try{hint.textContent='Popup কাজ করেনি—Redirect Login চেষ্টা করা হচ্ছে…';await cloudAuth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());return}
+   catch(x){e=x}
+  }
+  cloudError(e);
+  let help='Login ব্যর্থ ('+(e.code||'unknown')+'): '+(e.message||'অজানা সমস্যা');
+  if(e.code==='auth/unauthorized-domain')help+='। Firebase Console → Authentication → Settings → Authorized domains-এ iammdtanvirrahman.github.io যোগ করে Save করো।';
+  else if(e.code==='auth/operation-not-allowed')help+='। Firebase Console → Authentication → Sign-in method-এ Google provider Enable করো।';
+  else if(e.code==='auth/network-request-failed')help+='। ইন্টারনেট/VPN বা browser tracking restrictions পরীক্ষা করো।';
+  hint.textContent=help;alert(help);
+ }finally{btn.disabled=!cloudAuth}
+};
 document.querySelector('#createAccount').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');const email=document.querySelector('#cloudEmail').value.trim(),password=document.querySelector('#cloudPassword').value;if(!email||password.length<6)throw new Error('সঠিক ইমেইল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দাও।');await cloudAuth.createUserWithEmailAndPassword(email,password)}catch(e){alert(e.message)}};
 document.querySelector('#signIn').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');await cloudAuth.signInWithEmailAndPassword(document.querySelector('#cloudEmail').value.trim(),document.querySelector('#cloudPassword').value)}catch(e){alert(e.message)}};
 document.querySelector('#signOut').onclick=async()=>{try{if(cloudAuth)await cloudAuth.signOut()}catch(e){cloudError(e)}};
