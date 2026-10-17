@@ -210,7 +210,23 @@ tfoot b{color:var(--text);font-weight:600}
 .problem-backdrop{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.78);backdrop-filter:blur(8px)}
 .problem-dialog{display:flex;flex-direction:column;width:min(620px,100%);max-height:88dvh;overflow:hidden;border:1px solid #39393f;border-radius:16px;background:#0c0c0e;box-shadow:0 24px 90px #000}
 .problem-head{display:flex;align-items:flex-start;gap:12px;padding:18px;border-bottom:1px solid var(--line-hi)}.problem-head h2{margin:0;font-size:17px}.problem-sub{margin-top:4px;color:var(--muted);font-size:12px}.problem-close{margin-left:auto;width:34px;height:34px;border:1px solid var(--line-hi);border-radius:9px;color:var(--muted)}
-.problem-body{padding:16px;overflow:auto}.problem-label{display:block;margin:0 0 7px;color:#c8c8ce;font-size:12px;font-weight:600}.problem-input{display:block;width:100%;min-height:95px;padding:11px;border:1px solid var(--line-hi);border-radius:10px;outline:none;background:#050506;color:var(--text);resize:vertical;font:inherit;font-family:var(--font);line-height:1.7;}.problem-input:focus{border-color:#ff5d6c}.problem-compose{display:grid;gap:12px}.problem-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.problem-file{max-width:100%;font-size:12px;color:var(--muted)}.problem-hint{color:var(--dim);font-size:11px}.problem-list{display:grid;gap:9px;margin-top:18px}.problem-item{padding:12px;border:1px solid var(--line-hi);border-radius:11px;background:#101012}.problem-item.solved{opacity:.68}.problem-item-top{display:flex;align-items:center;gap:8px}.problem-item-top .state{margin-left:auto;color:#ff8290;font-size:11px}.problem-item.solved .state{color:var(--green-hi)}.problem-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.problem-image{display:block;max-width:100%;max-height:260px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}.problem-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.problem-item-actions button{padding:6px 9px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:11px}.problem-empty{padding:20px;border:1px dashed var(--line-hi);border-radius:10px;color:var(--muted);text-align:center;font-size:13px}
+.problem-body{padding:16px;overflow:auto}.problem-label{display:block;margin:0 0 7px;color:#c8c8ce;font-size:12px;font-weight:600}.problem-input{display:block;width:100%;min-height:95px;padding:11px;border:1px solid var(--line-hi);border-radius:10px;outline:none;background:#050506;color:var(--text);resize:vertical;font:inherit;font-family:var(--font);line-height:1.7;}.problem-input:focus{border-color:#ff5d6c}.problem-compose{display:grid;gap:12px}.problem-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.problem-file{max-width:100%;font-size:12px;color:var(--muted)}.problem-hint{color:var(--dim);font-size:11px}.problem-list{display:grid;gap:9px;margin-top:18px}.problem-item{padding:12px;border:1px solid var(--line-hi);border-radius:11px;background:#101012}.problem-item.solved{opacity:.68}.problem-tags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}.problem-tags span{padding:3px 7px;border:1px solid #2b4938;border-radius:12px;background:#102019;color:var(--green-hi);font-size:10px}.problem-item-top{display:flex;align-items:center;gap:8px}.problem-item-top .state{margin-left:auto;color:#ff8290;font-size:11px}.problem-item.solved .state{color:var(--green-hi)}.problem-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.problem-image{display:block;max-width:100%;max-height:260px;margin-top:8px;border-radius:8px;border:1px solid var(--line)}.problem-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.problem-item-actions button{padding:6px 9px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:11px}.problem-small{min-height:55px;margin-bottom:10px;resize:vertical}.problem-tag-input{min-height:0;height:40px;margin-bottom:10px}.hub-extra-fields{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.problem-empty{padding:20px;border:1px dashed var(--line-hi);border-radius:10px;color:var(--muted);text-align:center;font-size:13px}
+
+/* AdmissionOS 2.0 Study Hub */
+.hub-backdrop{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(10px)}
+.hub-dialog{display:flex;flex-direction:column;width:min(980px,100%);max-height:92dvh;overflow:hidden;border:1px solid #34343a;border-radius:16px;background:#09090b;box-shadow:0 24px 90px #000}
+.hub-head{display:flex;align-items:center;gap:12px;padding:17px 20px;border-bottom:1px solid var(--line-hi)}.hub-head h2{margin:0;font-size:18px}.hub-head h2 span{padding:3px 6px;border-radius:5px;background:#10241b;color:var(--green-hi);font-size:11px}.hub-head p{margin:4px 0 0;color:var(--muted);font-size:12px}.hub-head .problem-close{flex:none}
+.hub-tabs{display:flex;gap:5px;padding:9px 12px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:thin}.hub-tabs button{flex:none;padding:9px 12px;border-radius:8px;color:var(--muted);font-size:12px}.hub-tabs button:hover{background:#151518;color:var(--text)}.hub-tabs button.on{background:#14221b;color:var(--green-hi)}.hub-tabs button span{margin-left:4px;color:var(--red)}
+.hub-body{padding:18px;overflow:auto;min-height:180px}.hub-section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.hub-section-title h3{margin:0;font-size:17px}.hub-section-title p{margin:4px 0 0;color:var(--muted);font-size:12px}.hub-section-title input[type=date]{height:34px;padding:0 8px;border:1px solid var(--line-hi);border-radius:8px;background:#050506;color:var(--text)}
+.hub-form{display:grid;grid-template-columns:1.1fr 1.5fr .7fr 1fr auto;align-items:end;gap:10px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#0e0e10}.hub-form label,.hub-filter-row label{display:grid;gap:6px;color:var(--muted);font-size:11px}.hub-form select,.hub-form input[type=number],.hub-filter-row select{width:100%;min-width:0;height:36px;padding:0 9px;border:1px solid var(--line-hi);border-radius:8px;background:#050506;color:var(--text);font:inherit;font-size:12px}.hub-form .hub-check{display:flex;align-items:center;gap:7px;min-height:36px;white-space:nowrap}.hub-check input{accent-color:var(--green-hi)}.hub-primary{border-color:#265d42;background:#10251b;color:var(--green-hi)}.hub-primary:hover{background:#173626}
+.hub-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}.hub-stat{padding:12px;border:1px solid var(--line);border-radius:10px;background:#0e0e10}.hub-stat span{display:block;color:var(--muted);font-size:11px}.hub-stat strong{display:block;margin-top:3px;font-size:20px}
+.hub-list{display:grid;gap:9px}.hub-empty{padding:18px;border:1px dashed var(--line-hi);border-radius:10px;color:var(--muted);font-size:12px;text-align:center}.hub-task{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:11px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0e0e10}.hub-task.done{opacity:.65}.hub-task input[type=checkbox]{accent-color:var(--green-hi);width:16px;height:16px}.hub-task h4{margin:0;font-size:13px;font-weight:600}.hub-task p{margin:4px 0 0;color:var(--muted);font-size:11px}.hub-task-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.hub-task-actions button{padding:6px 8px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:11px}.hub-task-actions input{width:74px;height:30px;padding:0 6px;border:1px solid var(--line-hi);border-radius:7px;background:#050506;color:var(--text);font-size:12px}
+.hub-filter-row{display:flex;justify-content:flex-end;margin:-4px 0 12px}.hub-filter-row label{display:flex;align-items:center;gap:8px}.hub-filter-row select{width:auto}
+.analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}.analytics-card{padding:13px;border:1px solid var(--line);border-radius:11px;background:#0e0e10}.analytics-card h4{margin:0 0 9px;font-size:13px}.analytics-card .analytics-main{display:flex;align-items:baseline;gap:7px}.analytics-card strong{font-size:24px}.analytics-card small{color:var(--muted)}.analytics-track{height:6px;margin:10px 0;background:#202024;border-radius:4px;overflow:hidden}.analytics-track i{display:block;height:100%;background:var(--green-hi);border-radius:4px}.analytics-meta{display:flex;justify-content:space-between;gap:6px;color:var(--muted);font-size:11px}.hub-card{padding:14px;border:1px solid var(--line);border-radius:11px;background:#0e0e10}.hub-card h4{margin:0 0 8px;font-size:13px}.hub-card p{color:var(--muted);font-size:12px;line-height:1.6}.hub-card>strong{font-size:25px}
+.focus-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.focus-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;padding:24px;border:1px solid var(--line);border-radius:14px;background:radial-gradient(ellipse at center,#12231a 0%,#0c0c0e 65%)}.focus-clock>p{margin:0;color:var(--green-hi);font-size:11px;letter-spacing:.16em}.focus-clock>strong{margin:12px 0;font-size:clamp(44px,8vw,68px);font-weight:500;letter-spacing:-.05em;font-variant-numeric:tabular-nums}.focus-clock>span{color:var(--muted);font-size:12px}.focus-actions{display:flex;gap:8px;margin-top:20px}.focus-side{display:grid;gap:10px}.session-presets{display:flex;gap:7px}.session-presets button{padding:7px 10px;border:1px solid var(--line-hi);border-radius:7px;color:var(--muted);font-size:12px}.session-presets button.on{border-color:var(--green-line);background:#10251b;color:var(--green-hi)}
+.backup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.hub-note{margin:14px 0 0;color:var(--muted);font-size:11px;line-height:1.7}
+@media(max-width:720px){.hub-backdrop{padding:0;align-items:flex-end}.hub-dialog{width:100%;max-height:95dvh;border-radius:16px 16px 0 0}.hub-head{padding:14px}.hub-body{padding:12px}.hub-form{grid-template-columns:1fr 1fr}.hub-form label:nth-child(2){grid-column:span 2}.hub-form .hub-primary{grid-column:span 2}.hub-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.hub-stat{padding:9px}.hub-stat strong{font-size:18px}.hub-section-title{align-items:flex-start}.hub-section-title p{max-width:35ch}.analytics-grid{grid-template-columns:1fr}.focus-layout,.backup-grid{grid-template-columns:1fr}.focus-clock{min-height:235px}.hub-task{grid-template-columns:auto minmax(0,1fr)}.hub-task-actions{grid-column:2}.hub-tabs button{padding:9px}.problem-small{min-height:50px}}
+@media(max-width:420px){#studyHubBtn{padding:0 8px;font-size:12px}.hub-form{grid-template-columns:1fr}.hub-form label:nth-child(2),.hub-form .hub-primary{grid-column:auto}.hub-stats{gap:6px}.hub-stat strong{font-size:16px}.hub-stat span{font-size:10px}}
 @media(max-width:640px){.problem-backdrop{align-items:flex-end;padding:0}.problem-dialog{width:100%;max-height:92dvh;border-radius:16px 16px 0 0}.problem-head{padding:16px}.problem-body{padding:13px}.problem-btn{margin-left:4px;padding:3px 5px;font-size:10px}}
 </style>
 </head>
@@ -268,6 +284,7 @@ tfoot b{color:var(--text);font-weight:600}
       </div>
     </div>
 
+    <button class="btn" id="studyHubBtn" type="button" title="Planner, revisions, analytics and focus">Study Hub</button>
     <div class="mw">
       <button class="btn icon" id="more" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Menu">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
@@ -333,6 +350,54 @@ tfoot b{color:var(--text);font-weight:600}
     <div class="stats" id="stats"></div>
   </footer>
 
+  <div class="hub-backdrop" id="hubBackdrop" hidden>
+    <section class="hub-dialog" role="dialog" aria-modal="true" aria-labelledby="hubTitle">
+      <header class="hub-head"><div><h2 id="hubTitle">AdmissionOS <span>2.0</span></h2><p>Plan smarter. Revise on time. Track progress.</p></div><button class="problem-close" id="hubClose" type="button" aria-label="Close">✕</button></header>
+      <nav class="hub-tabs" id="hubTabs" aria-label="Study tools">
+        <button type="button" class="on" data-hub-tab="planner">Daily Planner</button>
+        <button type="button" data-hub-tab="revision">Smart Revision <span id="revisionDueBadge"></span></button>
+        <button type="button" data-hub-tab="analytics">Analytics</button>
+        <button type="button" data-hub-tab="focus">Focus Timer</button>
+        <button type="button" data-hub-tab="backup">Backup & Offline</button>
+      </nav>
+      <div class="hub-body">
+        <section class="hub-panel" id="hubPanel-planner">
+          <div class="hub-section-title"><div><h3>Daily Study Planner</h3><p>Chapter, MCQ target and revision in one daily plan.</p></div><input id="planDate" type="date" aria-label="Plan date"></div>
+          <form id="planForm" class="hub-form">
+            <label>Subject<select id="planSubject" required></select></label>
+            <label>Chapter<select id="planChapter" required></select></label>
+            <label>MCQ target<input id="planMcqTarget" type="number" min="0" max="5000" value="30" required></label>
+            <label class="hub-check"><input id="planRevision" type="checkbox"> Include revision</label>
+            <button type="submit" class="btn hub-primary">＋ Add to plan</button>
+          </form>
+          <div class="hub-stats" id="planSummary"></div>
+          <div id="planList" class="hub-list"></div>
+        </section>
+        <section class="hub-panel" id="hubPanel-revision" hidden>
+          <div class="hub-section-title"><div><h3>Smart Revision Reminder</h3><p>When a chapter's “পড়া” checkbox is first completed, reminders are scheduled for +1, +3, +7 and +14 days.</p></div><button class="btn" id="addRevisionBtn" type="button">＋ Add manually</button></div>
+          <div class="hub-filter-row"><label>Show <select id="revisionFilter"><option value="due">Due & overdue</option><option value="all">All reminders</option><option value="done">Completed</option></select></label></div>
+          <div id="revisionList" class="hub-list"></div>
+        </section>
+        <section class="hub-panel" id="hubPanel-analytics" hidden>
+          <div class="hub-section-title"><div><h3>Subject-wise Analytics</h3><p>Live analysis from your existing chapter tracker.</p></div><button class="btn" id="refreshAnalytics" type="button">Refresh</button></div>
+          <div id="analyticsGrid" class="analytics-grid"></div>
+          <div class="hub-card"><h4>Chapters needing attention</h4><div id="weakChapters" class="hub-list"></div></div>
+        </section>
+        <section class="hub-panel" id="hubPanel-focus" hidden>
+          <div class="focus-layout">
+            <div class="focus-clock"><p>FOCUS SESSION</p><strong id="focusClock">25:00</strong><span id="focusState">Ready when you are</span><div class="focus-actions"><button type="button" class="btn hub-primary" id="focusStart">Start</button><button type="button" class="btn" id="focusPause" disabled>Pause</button><button type="button" class="btn" id="focusReset">Reset</button></div></div>
+            <div class="focus-side"><div class="hub-card"><h4>Today</h4><strong id="focusToday">0 min</strong><p>Recorded focus time</p></div><div class="hub-card"><h4>Study streak</h4><strong id="focusStreak">0 days</strong><p>Days with at least 1 minute of focus</p></div><div class="hub-card"><h4>Session length</h4><div class="session-presets"><button type="button" data-focus-min="15">15 min</button><button type="button" class="on" data-focus-min="25">25 min</button><button type="button" data-focus-min="50">50 min</button></div></div></div>
+          </div>
+        </section>
+        <section class="hub-panel" id="hubPanel-backup" hidden>
+          <div class="hub-section-title"><div><h3>Backup & Offline</h3><p>Your chapter progress, planner, reminders, focus stats and problem notebook can be exported in one file.</p></div></div>
+          <div class="backup-grid"><div class="hub-card"><h4>Complete backup</h4><p>Download a JSON file containing all locally stored AdmissionOS data.</p><button class="btn hub-primary" id="fullExportBtn" type="button">Export all data</button></div><div class="hub-card"><h4>Restore backup</h4><p>Import a previous AdmissionOS backup. Existing data is merged where possible.</p><button class="btn" id="fullImportBtn" type="button">Choose backup file</button><input type="file" id="fullImportFile" accept="application/json,.json" hidden></div><div class="hub-card"><h4>Offline mode</h4><p id="offlineStatus">Checking offline support…</p><button class="btn" id="offlineInstallBtn" type="button">Enable offline cache</button></div></div>
+          <p class="hub-note">For privacy, this backup stays on your device until you choose to move it. Google cloud sync requires an internet connection. Images in this notebook are included in JSON export.</p>
+        </section>
+      </div>
+    </section>
+  </div>
+
 </div>
 
 <div class="problem-backdrop" id="problemBackdrop" hidden>
@@ -344,6 +409,11 @@ tfoot b{color:var(--text);font-weight:600}
 <div><label class="problem-label" for="problemImage">প্রশ্নের ছবি (ঐচ্ছিক)</label><input class="problem-file" id="problemImage" type="file" accept="image/*"><div class="problem-hint">ছবি ছোট করে সংরক্ষণ করা হবে।</div></div>
 <div class="problem-actions"><button class="btn" type="submit" id="problemSave">＋ প্রশ্ন সংরক্ষণ</button><span class="problem-hint" id="problemSaveHint">Local backup + cloud sync</span></div>
 </form>
+<div class="hub-extra-fields">
+  <label class="problem-label" for="problemReason">কেন ভুল হয়েছিল? (ঐচ্ছিক)</label><textarea class="problem-input problem-small" id="problemReason" rows="2" placeholder="যেমন: সূত্র ভুলে গিয়েছিলাম"></textarea>
+  <label class="problem-label" for="problemSolution">সমাধান / সঠিক ধারণা (ঐচ্ছিক)</label><textarea class="problem-input problem-small" id="problemSolution" rows="3" placeholder="সঠিক পদ্ধতি বা সমাধান লিখো…"></textarea>
+  <label class="problem-label" for="problemTags">ট্যাগ (কমা দিয়ে আলাদা করো)</label><input class="problem-input problem-tag-input" id="problemTags" type="text" placeholder="যেমন: সূত্র, জ্যামিতি, ভুল MCQ">
+</div>
 <div class="problem-list" id="problemList"></div>
 </div></section></div>
 
@@ -394,6 +464,14 @@ let active=subjects[0].id,paper='all',sort='default';
 let problems={};try{problems=JSON.parse(localStorage.getItem(PROBLEMS_STORE)||'{}')}catch(e){problems={}}
 if(!problems||typeof problems!=='object'||Array.isArray(problems))problems={};
 let problemChapterKey=null,problemCloudTimers={};
+const PLANNER_STORE='admissionOS2_planner',REVISION_STORE='admissionOS2_revisions',FOCUS_STORE='admissionOS2_focus';
+let studyPlans={},revisionReminders=[],focusData={days:{},sessionMinutes:25,elapsed:0,runningSince:0}; 
+try{studyPlans=JSON.parse(localStorage.getItem(PLANNER_STORE)||'{}')}catch(e){studyPlans={}}
+if(!studyPlans||typeof studyPlans!=='object'||Array.isArray(studyPlans))studyPlans={};
+try{revisionReminders=JSON.parse(localStorage.getItem(REVISION_STORE)||'[]')}catch(e){revisionReminders=[]}
+if(!Array.isArray(revisionReminders))revisionReminders=[];
+try{focusData=Object.assign(focusData,JSON.parse(localStorage.getItem(FOCUS_STORE)||'{}'))}catch(e){}
+if(!focusData.days||typeof focusData.days!=='object')focusData.days={};
 try{const t=localStorage.getItem(TAB_STORE);if(subjects.some(s=>s.id===t))active=t}catch(e){}
 const mq=window.matchMedia('(max-width:640px)');
 
@@ -510,8 +588,9 @@ $('#rows').addEventListener('change',e=>{
   const inp=e.target;
   if(!inp.matches('td.c input'))return;
   const tr=inp.closest('tr'),k=tr.dataset.k,i=+inp.dataset.i;
-  const a=(progress[k]||EMPTY).slice();
+  const a=(progress[k]||EMPTY).slice(),was=!!a[i];
   a[i]=inp.checked;
+  if(i===0&&!was&&inp.checked)scheduleChapterRevisions(k);
   progress[k]=a;
   patchRow(tr);
   renderStats();
@@ -584,31 +663,9 @@ document.addEventListener('click',e=>{if(!e.target.closest('.menu'))closeMenus()
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenus()});
 
 /* export / import */
-$('#exportBtn').addEventListener('click',()=>{
-  closeMenus();
-  const blob=new Blob([JSON.stringify({version:1,progress:progress},null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='admission-progress-backup.json';
-  document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-});
+$('#exportBtn').addEventListener('click',()=>{closeMenus();fullExport()});
 $('#importBtn').addEventListener('click',()=>{closeMenus();$('#importFile').click()});
-$('#importFile').addEventListener('change',e=>{
-  const f=e.target.files[0];
-  if(!f)return;
-  const r=new FileReader();
-  r.onload=()=>{
-    try{
-      const d=JSON.parse(r.result);
-      if(!d.progress||typeof d.progress!=='object'||Array.isArray(d.progress))throw new Error('bad file');
-      progress=d.progress;
-      save();renderRows();renderStats();
-      flash('Imported');
-    }catch(x){flash('Invalid backup file','err')}
-    e.target.value='';
-  };
-  r.readAsText(f);
-});
+$('#importFile').addEventListener('change',e=>{const f=e.target.files[0];if(f)fullImportFile(f);e.target.value=''});
 
 
 /* Problems for Later: local-first, chapter-wise cloud sync */
@@ -616,16 +673,16 @@ function saveProblemsLocal(){try{localStorage.setItem(PROBLEMS_STORE,JSON.string
 function queueProblemCloud(k){if(!user||!db)return;clearTimeout(problemCloudTimers[k]);setSync('busy','Saving problems…');problemCloudTimers[k]=setTimeout(async()=>{try{await docRef(user).set({problemsByChapter:problems,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});setSync('ok','Synced',user.email||'')}catch(e){cloudError(e)}},500)}
 function persistProblems(k){saveProblemsLocal();queueProblemCloud(k);renderRows();renderProblemList()}
 function chapterNameFromKey(k){for(const s of subjects)for(const ch of s.chapters)if(key(s.id,ch)===k)return s.bn+' · '+ch[0]+'. '+ch[1];return 'অধ্যায়'}
-function openProblems(k){problemChapterKey=k;$('#problemChapter').textContent=chapterNameFromKey(k);$('#problemBackdrop').hidden=false;document.body.style.overflow='hidden';$('#problemText').value='';$('#problemImage').value='';$('#problemSaveHint').textContent=user?'Cloud sync চালু':'Local backup — Google Login করলে cloud sync হবে';renderProblemList();setTimeout(()=>$('#problemText').focus(),50)}
+function openProblems(k){problemChapterKey=k;$('#problemChapter').textContent=chapterNameFromKey(k);$('#problemBackdrop').hidden=false;document.body.style.overflow='hidden';$('#problemText').value='';$('#problemReason').value='';$('#problemSolution').value='';$('#problemTags').value='';$('#problemImage').value='';$('#problemSaveHint').textContent=user?'Cloud sync চালু':'Local backup — Google Login করলে cloud sync হবে';renderProblemList();setTimeout(()=>$('#problemText').focus(),50)}
 function closeProblems(){$('#problemBackdrop').hidden=true;document.body.style.overflow='';problemChapterKey=null}
-function renderProblemList(){const el=$('#problemList');if(!el)return;const arr=problemChapterKey?(problems[problemChapterKey]||[]):[];if(!arr.length){el.innerHTML='<div class="problem-empty">এখনো কোনো প্রশ্ন রাখা হয়নি। উপরে প্রশ্ন লিখে বা ছবি দিয়ে সংরক্ষণ করো।</div>';return}el.innerHTML=arr.map((p,i)=>'<article class="problem-item'+(p.solved?' solved':'')+'" data-problem-id="'+esc(p.id)+'"><div class="problem-item-top"><strong>প্রশ্ন '+(i+1)+'</strong><span class="state">'+(p.solved?'✓ Solved':'● Pending')+'</span></div>'+(p.text?'<div class="problem-text">'+esc(p.text)+'</div>':'')+(p.image?'<img class="problem-image" src="'+p.image+'" alt="সংরক্ষিত প্রশ্নের ছবি">':'')+'<div class="problem-item-actions"><button type="button" data-problem-action="toggle">'+(p.solved?'আবার Pending':'✓ Solved চিহ্নিত করো')+'</button><button type="button" data-problem-action="edit">Edit</button><button type="button" data-problem-action="delete">Delete</button></div></article>').join('')}
+function renderProblemList(){const el=$('#problemList');if(!el)return;const arr=problemChapterKey?(problems[problemChapterKey]||[]):[];if(!arr.length){el.innerHTML='<div class="problem-empty">এখনো কোনো প্রশ্ন রাখা হয়নি। উপরে প্রশ্ন লিখে বা ছবি দিয়ে সংরক্ষণ করো।</div>';return}el.innerHTML=arr.map((p,i)=>'<article class="problem-item'+(p.solved?' solved':'')+'" data-problem-id="'+esc(p.id)+'"><div class="problem-item-top"><strong>প্রশ্ন '+(i+1)+'</strong><span class="state">'+(p.solved?'✓ Solved':'● Pending')+'</span></div>'+(p.text?'<div class="problem-text">'+esc(p.text)+'</div>':'')+(p.reason?'<div class="problem-text"><b>ভুলের কারণ:</b> '+esc(p.reason)+'</div>':'')+(p.solution?'<div class="problem-text"><b>সমাধান:</b> '+esc(p.solution)+'</div>':'')+((p.tags||[]).length?'<div class="problem-tags">'+p.tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div>':'')+(p.image?'<img class="problem-image" src="'+p.image+'" alt="সংরক্ষিত প্রশ্নের ছবি">':'')+'<div class="problem-item-actions"><button type="button" data-problem-action="toggle">'+(p.solved?'আবার Pending':'✓ Solved চিহ্নিত করো')+'</button><button type="button" data-problem-action="edit">Edit</button><button type="button" data-problem-action="delete">Delete</button></div></article>').join('')}
 function compressProblemImage(file){return new Promise((resolve,reject)=>{if(!file||!file.type.startsWith('image/')){resolve('');return}const reader=new FileReader();reader.onerror=()=>reject(new Error('ছবি পড়া যায়নি'));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('ছবিটি খোলা যায়নি'));img.onload=()=>{const scale=Math.min(1,1200/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',.68))};img.src=reader.result};reader.readAsDataURL(file)})}
 $('#rows').addEventListener('click',e=>{const b=e.target.closest('[data-problem-key]');if(b)openProblems(b.dataset.problemKey)});
 $('#problemClose').addEventListener('click',closeProblems);
 $('#problemBackdrop').addEventListener('click',e=>{if(e.target===$('#problemBackdrop'))closeProblems()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#problemBackdrop').hidden)closeProblems()});
-$('#problemForm').addEventListener('submit',async e=>{e.preventDefault();if(!problemChapterKey)return;const text=$('#problemText').value.trim(),file=$('#problemImage').files[0];if(!text&&!file){flash('প্রশ্ন লিখো অথবা ছবি যোগ করো','err');return}const btn=$('#problemSave');btn.disabled=true;btn.textContent='সংরক্ষণ হচ্ছে…';try{const image=await compressProblemImage(file),k=problemChapterKey,arr=problems[k]||(problems[k]=[]);arr.push({id:'p_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),text,image,solved:false,createdAt:Date.now()});$('#problemText').value='';$('#problemImage').value='';persistProblems(k);flash(user?'প্রশ্ন সংরক্ষিত · Syncing':'প্রশ্ন Local Backup-এ সংরক্ষিত','ok')}catch(err){flash(err.message||'প্রশ্ন সংরক্ষণ করা যায়নি','err')}finally{btn.disabled=false;btn.textContent='＋ প্রশ্ন সংরক্ষণ'}});
-$('#problemList').addEventListener('click',e=>{const b=e.target.closest('[data-problem-action]');if(!b||!problemChapterKey)return;const k=problemChapterKey,arr=problems[k]||[],card=b.closest('[data-problem-id]'),i=arr.findIndex(p=>p.id===card.dataset.problemId);if(i<0)return;const action=b.dataset.problemAction;if(action==='toggle'){arr[i].solved=!arr[i].solved;persistProblems(k)}else if(action==='delete'){if(!confirm('এই প্রশ্নটি মুছে ফেলবে?'))return;arr.splice(i,1);if(!arr.length)delete problems[k];persistProblems(k)}else if(action==='edit'){const next=prompt('প্রশ্ন / নোট সম্পাদনা করো:',arr[i].text||'');if(next===null)return;arr[i].text=next.trim();persistProblems(k)}});
+$('#problemForm').addEventListener('submit',async e=>{e.preventDefault();if(!problemChapterKey)return;const text=$('#problemText').value.trim(),reason=$('#problemReason').value.trim(),solution=$('#problemSolution').value.trim(),tags=$('#problemTags').value.split(',').map(x=>x.trim()).filter(Boolean),file=$('#problemImage').files[0];if(!text&&!file){flash('প্রশ্ন লিখো অথবা ছবি যোগ করো','err');return}const btn=$('#problemSave');btn.disabled=true;btn.textContent='সংরক্ষণ হচ্ছে…';try{const image=await compressProblemImage(file),k=problemChapterKey,arr=problems[k]||(problems[k]=[]);arr.push({id:'p_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),text,reason,solution,tags,image,solved:false,createdAt:Date.now()});$('#problemText').value='';$('#problemReason').value='';$('#problemSolution').value='';$('#problemTags').value='';$('#problemImage').value='';persistProblems(k);flash(user?'প্রশ্ন সংরক্ষিত · Syncing':'প্রশ্ন Local Backup-এ সংরক্ষিত','ok')}catch(err){flash(err.message||'প্রশ্ন সংরক্ষণ করা যায়নি','err')}finally{btn.disabled=false;btn.textContent='＋ প্রশ্ন সংরক্ষণ'}});
+$('#problemList').addEventListener('click',e=>{const b=e.target.closest('[data-problem-action]');if(!b||!problemChapterKey)return;const k=problemChapterKey,arr=problems[k]||[],card=b.closest('[data-problem-id]'),i=arr.findIndex(p=>p.id===card.dataset.problemId);if(i<0)return;const action=b.dataset.problemAction;if(action==='toggle'){arr[i].solved=!arr[i].solved;persistProblems(k)}else if(action==='delete'){if(!confirm('এই প্রশ্নটি মুছে ফেলবে?'))return;arr.splice(i,1);if(!arr.length)delete problems[k];persistProblems(k)}else if(action==='edit'){const p=arr[i],next=prompt('প্রশ্ন / নোট সম্পাদনা করো:',p.text||'');if(next===null)return;const reason=prompt('ভুলের কারণ:',p.reason||'');if(reason===null)return;const solution=prompt('সমাধান / সঠিক ধারণা:',p.solution||'');if(solution===null)return;const tags=prompt('ট্যাগ (কমা দিয়ে):',(p.tags||[]).join(', '));if(tags===null)return;p.text=next.trim();p.reason=reason.trim();p.solution=solution.trim();p.tags=tags.split(',').map(x=>x.trim()).filter(Boolean);persistProblems(k)}});
 async function loadCloudProblems(u){try{const snap=await docRef(u).get(),data=snap.exists?snap.data():{},remote=data.problemsByChapter;if(remote&&typeof remote==='object'&&!Array.isArray(remote)){Object.keys(remote).forEach(k=>{problems[k]=Array.isArray(remote[k])?remote[k]:[]});saveProblemsLocal()}else if(Object.keys(problems).length){queueProblemCloud(Object.keys(problems)[0])}renderRows();renderProblemList()}catch(e){cloudError(e)}}
 
 /* ---------- status + cloud sync ---------- */
@@ -763,12 +820,142 @@ $('#signOut').addEventListener('click',async()=>{
   try{if(auth)await auth.signOut()}catch(e){cloudError(e)}
 });
 
+
+/* ---------- AdmissionOS 2.0 tools ---------- */
+const localDate=(d=new Date())=>{const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+const datePlus=(date,days)=>{const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);return localDate(d)};
+const persistPlans=()=>{try{localStorage.setItem(PLANNER_STORE,JSON.stringify(studyPlans));return true}catch(e){flash('Planner storage is full','err');return false}};
+const persistReminders=()=>{try{localStorage.setItem(REVISION_STORE,JSON.stringify(revisionReminders));return true}catch(e){flash('Revision storage failed','err');return false}};
+const persistFocus=()=>{try{localStorage.setItem(FOCUS_STORE,JSON.stringify(focusData));return true}catch(e){flash('Focus stats could not be saved','err');return false}};
+function chapterInfo(k){for(const s of subjects)for(const ch of s.chapters)if(key(s.id,ch)===k)return{key:k,subjectId:s.id,subject:s.name,subjectBn:s.bn,chapter:ch[0]+'. '+ch[1],name:s.bn+' · '+ch[0]+'. '+ch[1]};return{key:k,subjectId:'',subject:'',subjectBn:'',chapter:k,name:k}}
+function scheduleChapterRevisions(k){
+  const info=chapterInfo(k),now=localDate(),days=[1,3,7,14];
+  days.forEach(day=>{const due=datePlus(now,day),id=k+'_'+now+'_'+day;if(!revisionReminders.some(r=>r.id===id))revisionReminders.push({id,key:k,name:info.name,due,afterDays:day,done:false,created:now})});
+  persistReminders();if(!$('#hubBackdrop').hidden){renderRevisionList();updateRevisionBadge()}
+}
+function currentPlanDate(){return $('#planDate').value||localDate()}
+function planItems(){const list=studyPlans[currentPlanDate()];return Array.isArray(list)?list:[]}
+function savePlanItems(list){studyPlans[currentPlanDate()]=list;persistPlans();renderPlanner();renderRows()}
+function setupPlannerOptions(){
+  $('#planDate').value=localDate();
+  $('#planSubject').innerHTML=subjects.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+' · '+esc(s.bn)+'</option>').join('');
+  updatePlanChapters();
+}
+function updatePlanChapters(){
+  const s=subjects.find(x=>x.id===$('#planSubject').value)||subjects[0];
+  $('#planChapter').innerHTML=s.chapters.map(ch=>'<option value="'+esc(key(s.id,ch))+'">'+esc(ch[0]+'. '+ch[1])+'</option>').join('');
+}
+function renderPlanner(){
+  const list=planItems(),done=list.filter(x=>x.done).length,target=list.reduce((n,x)=>n+(Number(x.mcqTarget)||0),0),doneMcq=list.reduce((n,x)=>n+(Number(x.mcqDone)||0),0);
+  $('#planSummary').innerHTML='<div class="hub-stat"><span>Tasks complete</span><strong>'+done+'/'+list.length+'</strong></div><div class="hub-stat"><span>MCQ progress</span><strong>'+doneMcq+'/'+target+'</strong></div><div class="hub-stat"><span>Revisions planned</span><strong>'+list.filter(x=>x.revision).length+'</strong></div>';
+  if(!list.length){$('#planList').innerHTML='<div class="hub-empty">এই দিনের কোনো পরিকল্পনা নেই। উপরে অধ্যায় বেছে Daily Plan-এ যোগ করো।</div>';return}
+  $('#planList').innerHTML=list.map((x,i)=>'<article class="hub-task'+(x.done?' done':'')+'" data-plan-id="'+esc(x.id)+'"><input type="checkbox" data-plan-action="done" '+(x.done?'checked':'')+' aria-label="Task complete"><div><h4>'+esc(x.name)+'</h4><p>'+esc(x.subject)+' · '+(x.revision?'Revision included · ':'')+'MCQ target '+Number(x.mcqTarget||0)+'</p></div><div class="hub-task-actions"><label class="problem-hint">MCQ done <input type="number" min="0" max="5000" value="'+Number(x.mcqDone||0)+'" data-plan-action="mcq"></label><button type="button" data-plan-action="revision">'+(x.revision?'✓ Revision planned':'＋ Revision')+'</button><button type="button" data-plan-action="delete">Delete</button></div></article>').join('');
+}
+function updateRevisionBadge(){const today=localDate(),n=revisionReminders.filter(r=>!r.done&&r.due<=today).length;$('#revisionDueBadge').textContent=n?'· '+n:''}
+function renderRevisionList(){
+  const f=$('#revisionFilter').value,today=localDate();
+  let list=revisionReminders.slice().sort((a,b)=>a.due.localeCompare(b.due));
+  if(f==='due')list=list.filter(r=>!r.done&&r.due<=today);
+  if(f==='done')list=list.filter(r=>r.done);
+  if(!list.length){$('#revisionList').innerHTML='<div class="hub-empty">'+(f==='due'?'No revision due today. Tick “পড়া” for a newly studied chapter to schedule reminders.':'No reminders in this view.')+'</div>';updateRevisionBadge();return}
+  $('#revisionList').innerHTML=list.map(r=>'<article class="hub-task'+(r.done?' done':'')+'" data-revision-id="'+esc(r.id)+'"><input type="checkbox" data-revision-action="done" '+(r.done?'checked':'')+' aria-label="Revision complete"><div><h4>'+esc(r.name)+'</h4><p>Day +'+r.afterDays+' · Due '+esc(r.due)+(r.due<today&&!r.done?' · OVERDUE':r.due===today&&!r.done?' · DUE TODAY':'')+'</p></div><div class="hub-task-actions"><button type="button" data-revision-action="postpone">Postpone 1 day</button><button type="button" data-revision-action="delete">Delete</button></div></article>').join('');
+  updateRevisionBadge();
+}
+function renderAnalytics(){
+  const grid=$('#analyticsGrid');
+  grid.innerHTML=subjects.map(s=>{const c=counts(s),pending=s.chapters.filter(ch=>cnt(get(s.id,ch))<4).length;return'<article class="analytics-card"><h4>'+esc(s.name)+' <small>· '+esc(s.bn)+'</small></h4><div class="analytics-main"><strong>'+c.pct+'%</strong><small>'+c.done+'/'+(c.n*4)+' steps done</small></div><div class="analytics-track"><i style="width:'+c.pct+'%"></i></div><div class="analytics-meta"><span>Study '+c.col[0]+'/'+c.n+'</span><span>Revision '+c.rev+'/'+(c.n*3)+'</span><span>Pending '+pending+'</span></div></article>'}).join('');
+  let weak=[];
+  subjects.forEach(s=>s.chapters.forEach(ch=>{const a=get(s.id,ch),n=cnt(a);if(n<4)weak.push({s,ch,n,key:key(s.id,ch)})}));
+  weak.sort((a,b)=>a.n-b.n);
+  $('#weakChapters').innerHTML=weak.length?weak.slice(0,10).map(o=>'<article class="hub-task"><div class="dot '+(o.n===0?'err':'busy')+'"></div><div><h4>'+esc(o.s.name+' · '+o.ch[0]+'. '+o.ch[1])+'</h4><p>'+o.n+'/4 tracker steps completed</p></div><div class="hub-task-actions"><button type="button" data-jump-key="'+esc(o.key)+'">Open chapter</button></div></article>').join(''):'<div class="hub-empty">সব অধ্যায়ের চারটি ধাপ সম্পূর্ণ। দারুণ কাজ!</div>';
+}
+function focusLogSeconds(seconds){
+  if(!Number.isFinite(seconds)||seconds<=0)return;
+  let remaining=Math.floor(seconds);
+  while(remaining>0){const d=new Date(),keyDate=localDate(d),toMidnight=Math.max(1,Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime()-d.getTime())/1000));const take=Math.min(remaining,toMidnight);focusData.days[keyDate]=(Number(focusData.days[keyDate])||0)+take;remaining-=take}
+  persistFocus();renderFocusStats();
+}
+function focusElapsed(){return Math.max(0,Number(focusData.elapsed)||0)+(focusData.runningSince?Math.max(0,Math.floor((Date.now()-focusData.runningSince)/1000)):0)}
+function focusRemaining(){return Math.max(0,(Number(focusData.sessionMinutes)||25)*60-focusElapsed())}
+function renderFocusStats(){
+  const rem=focusRemaining(),mins=Math.floor(rem/60),secs=rem%60;
+  $('#focusClock').textContent=String(mins).padStart(2,'0')+':'+String(secs).padStart(2,'0');
+  $('#focusStart').disabled=!!focusData.runningSince;$('#focusPause').disabled=!focusData.runningSince;
+  const today=localDate(),secsToday=Number(focusData.days[today])||0;
+  $('#focusToday').textContent=Math.floor(secsToday/60)+' min';
+  let streak=0,d=new Date();
+  for(let i=0;i<366;i++){const keyDate=localDate(d);if((Number(focusData.days[keyDate])||0)<60)break;streak++;d.setDate(d.getDate()-1)}
+  if(streak===0&&(Number(focusData.days[today])||0)<60){const y=new Date();y.setDate(y.getDate()-1);if((Number(focusData.days[localDate(y)])||0)>=60){let prev=0;for(let i=1;i<366;i++){const x=new Date();x.setDate(x.getDate()-i);if((Number(focusData.days[localDate(x)])||0)<60)break;prev++}streak=prev}}
+  $('#focusStreak').textContent=streak+' days';
+  $('#focusState').textContent=focusData.runningSince?'Session in progress':focusElapsed()?'Paused · '+Math.floor(focusElapsed()/60)+' min focused':'Ready when you are';
+  $('[data-focus-min]').forEach(b=>b.classList.toggle('on',Number(b.dataset.focusMin)===Number(focusData.sessionMinutes)));
+}
+let focusTick=null,lastFocusTick=0;
+function beginFocusTick(){if(focusTick)clearInterval(focusTick);lastFocusTick=Date.now();focusTick=setInterval(()=>{const now=Date.now();if(focusData.runningSince){const delta=(now-lastFocusTick)/1000;focusLogSeconds(delta);if(focusRemaining()<=0){focusData.elapsed=Number(focusData.sessionMinutes)*60;focusData.runningSince=0;persistFocus();clearInterval(focusTick);focusTick=null;flash('Focus session complete!','ok')}persistFocus()}lastFocusTick=now;renderFocusStats()},1000)}
+function stopFocus(){if(focusData.runningSince){const now=Date.now(),delta=Math.max(0,(now-focusData.runningSince)/1000);focusLogSeconds(delta);focusData.elapsed=focusElapsed();focusData.runningSince=0;persistFocus()}if(focusTick){clearInterval(focusTick);focusTick=null}renderFocusStats()}
+function showHubTab(tab){
+  $('#hubTabs button').forEach(b=>b.classList.toggle('on',b.dataset.hubTab===tab));
+  $('.hub-panel').forEach(p=>p.hidden=p.id!=='hubPanel-'+tab);
+  if(tab==='planner')renderPlanner();if(tab==='revision')renderRevisionList();if(tab==='analytics')renderAnalytics();if(tab==='focus')renderFocusStats();if(tab==='backup')refreshOfflineStatus();
+}
+function refreshOfflineStatus(){
+  $('#offlineStatus').textContent=('serviceWorker' in navigator)?'Offline app shell is supported in this browser. Cache this app once while online.':'This browser does not support Service Workers; local storage still works while the page is open.';
+}
+function fullExport(){
+  const data={app:'AdmissionOS',version:2,exportedAt:new Date().toISOString(),progress,problems,studyPlans,revisionReminders,focusData};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='admissionos-2-backup-'+localDate()+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);flash('Complete backup exported','ok');
+}
+function mergeObject(dst,src){if(!src||typeof src!=='object'||Array.isArray(src))return dst;Object.keys(src).forEach(k=>{if(Array.isArray(src[k]))dst[k]=src[k];else if(src[k]&&typeof src[k]==='object')dst[k]=Object.assign({},dst[k]||{},src[k]);else dst[k]=src[k]});return dst}
+function fullImportFile(file){
+  const reader=new FileReader();reader.onerror=()=>flash('Backup file could not be read','err');
+  reader.onload=()=>{try{const d=JSON.parse(reader.result);if(!d||typeof d!=='object')throw new Error('Invalid backup');
+    const incomingProgress=d.progress;
+    if(!incomingProgress||typeof incomingProgress!=='object'||Array.isArray(incomingProgress))throw new Error('Progress data missing');
+    progress=Object.assign({},progress,incomingProgress);
+    if(d.problems&&typeof d.problems==='object')problems=mergeObject(problems,d.problems);
+    if(d.studyPlans&&typeof d.studyPlans==='object')studyPlans=mergeObject(studyPlans,d.studyPlans);
+    if(Array.isArray(d.revisionReminders)){const ids=new Set(revisionReminders.map(x=>x.id));d.revisionReminders.forEach(x=>{if(!ids.has(x.id))revisionReminders.push(x)})}
+    if(d.focusData&&typeof d.focusData==='object'){focusData.days=Object.assign({},focusData.days||{},d.focusData.days||{});if(d.focusData.sessionMinutes)focusData.sessionMinutes=d.focusData.sessionMinutes}
+    saveLocal();saveProblemsLocal();persistPlans();persistReminders();persistFocus();queueCloudSave();renderRows();renderStats();renderProblemList();renderPlanner();renderRevisionList();renderAnalytics();renderFocusStats();flash('Backup restored and merged','ok');
+  }catch(e){flash('Backup file invalid: '+(e.message||'parse error'),'err')}};
+  reader.readAsText(file);
+}
+$('#studyHubBtn').addEventListener('click',()=>{$('#hubBackdrop').hidden=false;document.body.style.overflow='hidden';showHubTab('planner')});
+$('#hubClose').addEventListener('click',()=>{$('#hubBackdrop').hidden=true;document.body.style.overflow=''});
+$('#hubBackdrop').addEventListener('click',e=>{if(e.target===$('#hubBackdrop')){$('#hubBackdrop').hidden=true;document.body.style.overflow=''}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#hubBackdrop').hidden){$('#hubBackdrop').hidden=true;document.body.style.overflow=''}});
+$('#hubTabs').addEventListener('click',e=>{const b=e.target.closest('[data-hub-tab]');if(b)showHubTab(b.dataset.hubTab)});
+$('#planSubject').addEventListener('change',updatePlanChapters);
+$('#planDate').addEventListener('change',renderPlanner);
+$('#planForm').addEventListener('submit',e=>{e.preventDefault();const s=subjects.find(x=>x.id===$('#planSubject').value),k=$('#planChapter').value,ch=chapterInfo(k);const item={id:'plan_'+Date.now().toString(36),key:k,subject:s.name,name:ch.name,mcqTarget:Number($('#planMcqTarget').value)||0,mcqDone:0,revision:$('#planRevision').checked,done:false};const list=planItems();list.push(item);savePlanItems(list);flash('Added to daily plan','ok')});
+$('#planList').addEventListener('change',e=>{const a=e.target.dataset.planAction,card=e.target.closest('[data-plan-id]');if(!a||!card)return;const list=planItems(),i=list.findIndex(x=>x.id===card.dataset.planId);if(i<0)return;if(a==='done')list[i].done=e.target.checked;if(a==='mcq')list[i].mcqDone=Math.max(0,Math.min(5000,Number(e.target.value)||0));savePlanItems(list)});
+$('#planList').addEventListener('click',e=>{const b=e.target.closest('[data-plan-action]'),card=e.target.closest('[data-plan-id]');if(!b||!card)return;const list=planItems(),i=list.findIndex(x=>x.id===card.dataset.planId);if(i<0)return;if(b.dataset.planAction==='delete'){list.splice(i,1);savePlanItems(list)}else if(b.dataset.planAction==='revision'){list[i].revision=!list[i].revision;savePlanItems(list)}});
+$('#revisionFilter').addEventListener('change',renderRevisionList);
+$('#revisionList').addEventListener('change',e=>{if(e.target.dataset.revisionAction!=='done')return;const card=e.target.closest('[data-revision-id]'),r=revisionReminders.find(x=>x.id===card.dataset.revisionId);if(r){r.done=e.target.checked;r.completed=r.done?localDate():'';persistReminders();renderRevisionList()}});
+$('#revisionList').addEventListener('click',e=>{const b=e.target.closest('[data-revision-action]'),card=e.target.closest('[data-revision-id]');if(!b||!card)return;const i=revisionReminders.findIndex(r=>r.id===card.dataset.revisionId);if(i<0)return;if(b.dataset.revisionAction==='delete')revisionReminders.splice(i,1);else if(b.dataset.revisionAction==='postpone')revisionReminders[i].due=datePlus(revisionReminders[i].due,1);persistReminders();renderRevisionList()});
+$('#addRevisionBtn').addEventListener('click',()=>{const subject=prompt('Subject name? (Physics, Chemistry, Higher Math, Biology)','Physics');if(!subject)return;const s=subjects.find(x=>x.name.toLowerCase()===subject.trim().toLowerCase());if(!s){flash('Subject not found','err');return}const query=prompt('Chapter name or number?',s.chapters[0][0]);if(!query)return;const ch=s.chapters.find(x=>x[0]===query.trim()||x[1].toLowerCase().includes(query.trim().toLowerCase()));if(!ch){flash('Chapter not found','err');return}const keyNow=key(s.id,ch),day=prompt('Days from today until due?', '1');if(day===null||!Number.isFinite(Number(day))||Number(day)<0)return;const info=chapterInfo(keyNow);revisionReminders.push({id:'manual_'+Date.now(),key:keyNow,name:info.name,due:datePlus(localDate(),Math.floor(Number(day))),afterDays:'manual',done:false,created:localDate()});persistReminders();renderRevisionList()});
+$('#refreshAnalytics').addEventListener('click',renderAnalytics);
+$('#weakChapters').addEventListener('click',e=>{const b=e.target.closest('[data-jump-key]');if(!b)return;const found=chapterInfo(b.dataset.jumpKey);const s=subjects.find(x=>x.id===found.subjectId);if(!s)return;active=s.id;try{localStorage.setItem(TAB_STORE,active)}catch(x){}renderTabs();renderRows();$('#hubBackdrop').hidden=true;document.body.style.overflow='';const row=$('#rows tr[data-k="'+CSS.escape(b.dataset.jumpKey)+'"]');if(row)row.scrollIntoView({block:'center',behavior:'smooth'})});
+$('#focusStart').addEventListener('click',()=>{if(focusRemaining()<=0)focusData.elapsed=0;focusData.runningSince=Date.now();persistFocus();beginFocusTick();renderFocusStats()});
+$('#focusPause').addEventListener('click',stopFocus);
+$('#focusReset').addEventListener('click',()=>{stopFocus();focusData.elapsed=0;focusData.runningSince=0;persistFocus();renderFocusStats()});
+$('[data-focus-min]').forEach(b=>b.addEventListener('click',()=>{if(focusData.runningSince)return;focusData.sessionMinutes=Number(b.dataset.focusMin);focusData.elapsed=0;persistFocus();renderFocusStats()}));
+$('#fullExportBtn').addEventListener('click',fullExport);
+$('#fullImportBtn').addEventListener('click',()=>$('#fullImportFile').click());
+$('#fullImportFile').addEventListener('change',e=>{const f=e.target.files[0];if(f)fullImportFile(f);e.target.value=''});
+$('#offlineInstallBtn').addEventListener('click',async()=>{if(!('serviceWorker'in navigator)){flash('Offline caching is not supported by this browser','err');return}try{await navigator.serviceWorker.register('./sw.js');await navigator.serviceWorker.ready;refreshOfflineStatus();flash('Offline cache enabled. Reload the app once online.','ok')}catch(e){flash('Offline cache failed: '+(e.message||'error'),'err')}});
+setupPlannerOptions();
+updateRevisionBadge();
+if(focusData.runningSince){beginFocusTick()}
+
 /* ---------- start ---------- */
 renderTabs();
 renderRows();
 renderStats();
 paintSort();
 paintAccount();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 $('#favicon').href='data:image/svg+xml,'+encodeURIComponent($('.logo').outerHTML.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"'));
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initCloud);else initCloud();
 })();
