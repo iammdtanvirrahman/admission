@@ -1166,6 +1166,17 @@ const ROUTINE_MONTHLY_TESTS = [
 function routineDaysBetween(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/86400000)}
 function routineLectureGroup(test,n){
  const pad=String(n).padStart(2,"0");
+ if(test.id==="monthly-03"){
+   // The PDF calls this PCM lectures 09–13, but its detailed syllabus pages only list P09–P12 and C09–C11; M09–M13 is listed.
+   const known={
+     9:["P09","C09","M09"],
+     10:["P10","C10","M10"],
+     11:["P11","C11","M11"],
+     12:["P12","C11","M12"],
+     13:["P12","C11","M13"]
+   };
+   return known[n]||["P12","C11","M13"];
+ }
  return ["P"+pad,"C"+pad,"M"+pad];
 }
 function routineMonthlyRevision(date){
@@ -1183,8 +1194,9 @@ function routineMonthlyRevision(date){
  let detail;
  if(date>=test.start&&date<=test.end){
    detail=test.title+" is active ("+test.start+" to "+test.end+"). Follow the official test slot; after attempting it, analyse the mistakes and re-solve the incorrect written/MCQ items. Recall target: "+topics.join("; ")+".";
+   if(test.id==="monthly-03")detail+=" Note: the uploaded detailed syllabus lists P-09–P-12, C-09–C-11 and M-09–M-13; confirm any additional P/C scope from the class handouts.";
  }else{
-   detail="Upcoming "+test.title+" · "+test.start+" to "+test.end+" · official syllabus: PCM lectures "+String(test.first).padStart(2,"0")+"–"+String(test.last).padStart(2,"0")+". Today revise: "+topics.join("; ")+". Recall formulae/reactions without notes, do 10 mixed MCQs per subject and mark weak points.";
+   detail="Upcoming "+test.title+" · "+test.start+" to "+test.end+" · official syllabus: PCM lectures "+String(test.first).padStart(2,"0")+"–"+String(test.last).padStart(2,"0")+". Today revise: "+topics.join("; ")+". Recall formulae/reactions without notes, do 10 mixed MCQs per subject and mark weak points."+(test.id==="monthly-03"?" Note: in the uploaded PDFs, the detailed syllabus lists Physics P-09–P-12, Chemistry C-09–C-11 and Higher Math M-09–M-13; follow class handouts for any additional P/C coverage implied by the monthly-test label.":"");
  }
  detail+=(due.length?" Spaced revision due: "+due.map(r=>r.name).join("; ")+".":" Also review 5 older wrong answers from the error log.");
  return {title:"Revision + Monthly Cumulative Recall · "+test.title,detail,mcq:30};
