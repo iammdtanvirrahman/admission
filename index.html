@@ -828,7 +828,7 @@ function initCloud(){
       queueHubCloud();
       setSync('ok','Synced',user.email||'');
     }catch(e){cloudError(e)}
-    finally{loading=false}
+    finally{loading=false;queueHubCloud()}
   });
 }
 
