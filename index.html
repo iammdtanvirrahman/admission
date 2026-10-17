@@ -374,7 +374,7 @@ tfoot b{color:var(--text);font-weight:600}
           <div id="planList" class="hub-list"></div>
         </section>
         <section class="hub-panel" id="hubPanel-revision" hidden>
-          <div class="hub-section-title"><div><h3>Smart Revision Reminder</h3><p>When a chapter's “পড়া” checkbox is first completed, reminders are scheduled for +1, +3, +7 and +14 days.</p></div><button class="btn" id="addRevisionBtn" type="button">＋ Add manually</button></div>
+          <div class="hub-section-title"><div><h3>Smart Revision Reminder</h3><p>When a chapter's “পড়া” checkbox is first completed, reminders are scheduled for +1, +3, +7 and +14 days.</p></div><div class="hub-task-actions"><button class="btn" id="enableRevisionNotifications" type="button">Enable notifications</button><button class="btn" id="addRevisionBtn" type="button">＋ Add manually</button></div></div>
           <div class="hub-filter-row"><label>Show <select id="revisionFilter"><option value="due">Due & overdue</option><option value="all">All reminders</option><option value="done">Completed</option></select></label></div>
           <div id="revisionList" class="hub-list"></div>
         </section>
@@ -928,6 +928,18 @@ function renderPlanner(){
   $('#planList').innerHTML=list.map((x,i)=>'<article class="hub-task'+(x.done?' done':'')+'" data-plan-id="'+esc(x.id)+'"><input type="checkbox" data-plan-action="done" '+(x.done?'checked':'')+' aria-label="Task complete"><div><h4>'+esc(x.name)+'</h4><p>'+esc(x.subject)+' · '+(x.revision?'Revision included · ':'')+'MCQ target '+Number(x.mcqTarget||0)+'</p></div><div class="hub-task-actions"><label class="problem-hint">MCQ done <input type="number" min="0" max="5000" value="'+Number(x.mcqDone||0)+'" data-plan-action="mcq"></label><button type="button" data-plan-action="revision">'+(x.revision?'✓ Revision planned':'＋ Revision')+'</button><button type="button" data-plan-action="delete">Delete</button></div></article>').join('');
 }
 function updateRevisionBadge(){const today=localDate(),n=revisionReminders.filter(r=>!r.done&&r.due<=today).length;$('#revisionDueBadge').textContent=n?'· '+n:''}
+function notifyDueRevisions(){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  const today=localDate(),key='admissionOS2_notified_'+today;
+  try{if(localStorage.getItem(key))return}catch(e){}
+  const due=revisionReminders.filter(r=>!r.done&&r.due<=today);
+  if(!due.length)return;
+  try{new Notification('AdmissionOS · Revision due',{body:due.length+' chapter revision(s) due. Open Study Hub → Smart Revision.',tag:'admissionos-revision-'+today});localStorage.setItem(key,'1')}catch(e){}
+}
+$('#enableRevisionNotifications').addEventListener('click',async()=>{
+  if(!('Notification' in window)){flash('এই browser desktop notifications support করে না','err');return}
+  try{const permission=await Notification.requestPermission();if(permission==='granted'){notifyDueRevisions();flash('Revision notifications enabled','ok')}else flash('Notification permission দেওয়া হয়নি','err')}catch(e){flash('Notification permission unavailable','err')}
+});
 function renderRevisionList(){
   const f=$('#revisionFilter').value,today=localDate();
   let list=revisionReminders.slice().sort((a,b)=>a.due.localeCompare(b.due));
@@ -972,7 +984,7 @@ function stopFocus(){if(focusData.runningSince){const now=Date.now(),delta=Math.
 function showHubTab(tab){
   $('#hubTabs button').forEach(b=>b.classList.toggle('on',b.dataset.hubTab===tab));
   $('.hub-panel').forEach(p=>p.hidden=p.id!=='hubPanel-'+tab);
-  if(tab==='planner')renderPlanner();if(tab==='revision')renderRevisionList();if(tab==='analytics')renderAnalytics();if(tab==='focus')renderFocusStats();if(tab==='backup')refreshOfflineStatus();
+  if(tab==='planner')renderPlanner();if(tab==='revision'){renderRevisionList();notifyDueRevisions()}if(tab==='analytics')renderAnalytics();if(tab==='focus')renderFocusStats();if(tab==='backup')refreshOfflineStatus();
 }
 function refreshOfflineStatus(){
   $('#offlineStatus').textContent=('serviceWorker' in navigator)?'Offline app shell is supported in this browser. Cache this app once while online.':'This browser does not support Service Workers; local storage still works while the page is open.';
@@ -1025,6 +1037,7 @@ $('#fullImportFile').addEventListener('change',e=>{const f=e.target.files[0];if(
 $('#offlineInstallBtn').addEventListener('click',async()=>{if(!('serviceWorker'in navigator)){flash('Offline caching is not supported by this browser','err');return}try{await navigator.serviceWorker.register('./sw.js');await navigator.serviceWorker.ready;refreshOfflineStatus();flash('Offline cache enabled. Reload the app once online.','ok')}catch(e){flash('Offline cache failed: '+(e.message||'error'),'err')}});
 setupPlannerOptions();
 migrateProblemImages();
+notifyDueRevisions();
 updateRevisionBadge();
 if(focusData.runningSince){beginFocusTick()}
 
