@@ -16,10 +16,10 @@
 <section class="subjectCard" style="padding:18px;margin-bottom:18px">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0 0 4px;font-size:20px">☁️ সব ডিভাইসে Progress Sync</h2><div class="sub" id="cloudStatus">এখনও Cloud Sync সেটআপ করা হয়নি — আপাতত এই ব্রাউজারে সেভ হচ্ছে।</div></div><span class="pill" id="cloudBadge">LOCAL ONLY</span></div>
 <div id="authPanel" style="margin-top:14px;padding:16px;background:#0b111b;border:1px solid var(--line);border-radius:14px">
-<h3 style="margin:0 0 6px;color:#ff4545">Cloud Sync / Login</h3>
+<h3 style="margin:0 0 6px;color:#ff4545">Google Account Login</h3><p class="sub" style="margin:0 0 12px">পাসওয়ার্ড টাইপ না করে Google Account দিয়ে লগইন করো।</p><button class="btn" id="googleSignIn" style="width:100%;padding:12px;background:#f4f4f5;color:#111;border-color:#f4f4f5;font-weight:800">G　Continue with Google</button><div class="note" id="authHint"></div><div id="legacyLogin" style="display:none">
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px"><input id="cloudEmail" type="email" placeholder="ইমেইল" autocomplete="email" style="background:#111723;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px"><input id="cloudPassword" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password" style="background:#111723;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px"></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" id="createAccount">নতুন অ্যাকাউন্ট</button><button class="btn" id="signIn">লগইন</button><button class="btn" id="signOut">লগআউট</button></div>
-<div class="note" id="authHint"></div>
+</div>
 </div>
 <details style="margin-top:14px"><summary style="cursor:pointer;color:#b9c5ff">Advanced: Firebase Config</summary>
 <p class="sub">তোমার Firebase Web App configuration</p>
@@ -61,7 +61,7 @@ const DEFAULT_FIREBASE_CONFIG={
 };
 let cloudApp=null,cloudAuth=null,cloudDb=null,cloudUser=null,cloudReady=false,cloudWriteTimer=null,cloudLoading=false;
 function cloudStatus(message,badge){document.querySelector('#cloudStatus').textContent=message;document.querySelector('#cloudBadge').textContent=badge}
-function setCloudControls(){const ok=!!cloudAuth;document.querySelector('#signIn').disabled=!ok;document.querySelector('#createAccount').disabled=!ok;document.querySelector('#signOut').disabled=!cloudUser}
+function setCloudControls(){const ok=!!cloudAuth;document.querySelector('#signIn').disabled=!ok;document.querySelector('#createAccount').disabled=!ok;document.querySelector('#signOut').disabled=!cloudUser;document.querySelector('#googleSignIn').disabled=!ok}
 function cloudError(e){cloudStatus('Cloud error: '+(e&&e.message?e.message:'অজানা সমস্যা'),'ERROR')}
 function connectFirebaseConfig(raw){
  try{
@@ -74,7 +74,7 @@ function connectFirebaseConfig(raw){
   localStorage.setItem(FIREBASE_STORE,JSON.stringify(cfg));
   document.querySelector('#firebaseConfig').value=JSON.stringify(cfg,null,2);
   cloudAuth.onAuthStateChanged(async user=>{
-   cloudUser=user||null;setCloudControls();document.querySelector('#authHint').textContent=user?'লগইন হয়েছে: '+user.email:'প্রথমবার হলে নতুন অ্যাকাউন্ট তৈরি করো, পরে লগইন করো।';
+   cloudUser=user||null;setCloudControls();document.querySelector('#authHint').textContent=user?'Logged in: '+user.email:'Google Account দিয়ে লগইন করো।';
    if(!user){cloudStatus('Firebase সংযুক্ত। সব ডিভাইসে sync করতে একই account দিয়ে লগইন করো।','SIGNED OUT');return}
    cloudLoading=true;cloudStatus('Cloud থেকে progress আনা হচ্ছে…','SYNCING');
    try{
@@ -120,6 +120,7 @@ document.querySelector('#importBtn').onclick=()=>document.querySelector('#import
 document.querySelector('#importFile').onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result);if(!data.progress||typeof data.progress!=='object')throw Error();progress=data.progress;save();renderAll();alert('Progress সফলভাবে Import হয়েছে।')}catch(err){alert('ফাইলটি সঠিক ব্যাকআপ JSON নয়।')}e.target.value=''};r.readAsText(f)};
 document.querySelector('#connectFirebase').onclick=()=>connectFirebaseConfig(document.querySelector('#firebaseConfig').value);
 document.querySelector('#disconnectFirebase').onclick=()=>{localStorage.removeItem(FIREBASE_STORE);alert('এই ব্রাউজার থেকে Firebase config মুছে গেছে। Firebase Console-এর সেটিংস বদলায়নি।');location.reload()};
+document.querySelector('#googleSignIn').onclick=async()=>{try{if(!cloudAuth)throw new Error('Firebase config connect হয়নি।');const provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});await cloudAuth.signInWithPopup(provider)}catch(e){if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){try{await cloudAuth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())}catch(x){cloudError(x)}}else{cloudError(e);alert('Google Login error: '+e.message)}}};
 document.querySelector('#createAccount').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');const email=document.querySelector('#cloudEmail').value.trim(),password=document.querySelector('#cloudPassword').value;if(!email||password.length<6)throw new Error('সঠিক ইমেইল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দাও।');await cloudAuth.createUserWithEmailAndPassword(email,password)}catch(e){alert(e.message)}};
 document.querySelector('#signIn').onclick=async()=>{try{if(!cloudAuth)throw new Error('আগে Firebase config যোগ করে Connect করো।');await cloudAuth.signInWithEmailAndPassword(document.querySelector('#cloudEmail').value.trim(),document.querySelector('#cloudPassword').value)}catch(e){alert(e.message)}};
 document.querySelector('#signOut').onclick=async()=>{try{if(cloudAuth)await cloudAuth.signOut()}catch(e){cloudError(e)}};
